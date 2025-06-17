@@ -1,5 +1,4 @@
 import { UserPlus, Wallet, BarChart3, ArrowRight } from "lucide-react";
-import SharedBackground from "@/components/landing/SharedBackground";
 
 export default function HowItWorks() {
   const steps = [
@@ -96,66 +95,26 @@ export default function HowItWorks() {
   ];
 
   return (
-    <SharedBackground className="py-16 md:py-24" variant="howitworks">
-      {/* Animaciones crypto específicas para HowItWorks */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Workflow arrows */}
-        <div
-          className="absolute top-1/4 left-1/6 text-[#10B981]/20 text-3xl animate-bounce"
-          style={{ animationDelay: "1s", animationDuration: "3s" }}
-        >
-          →
-        </div>
-        <div
-          className="absolute top-1/2 right-1/6 text-[#3B82F6]/20 text-3xl animate-bounce"
-          style={{ animationDelay: "2s", animationDuration: "3s" }}
-        >
-          →
-        </div>
-
-        {/* Wallet and connection symbols */}
-        <div
-          className="absolute bottom-1/4 left-1/8 text-[#F59E0B]/18 text-2xl animate-pulse"
-          style={{ animationDelay: "1s" }}
-        >
-          👛
-        </div>
-        <div
-          className="absolute top-1/6 right-1/8 text-[#8B5CF6]/20 text-2xl animate-pulse"
-          style={{ animationDelay: "2s" }}
-        >
-          🔗
-        </div>
-        <div
-          className="absolute bottom-1/6 right-1/4 text-[#10B981]/18 text-2xl animate-pulse"
-          style={{ animationDelay: "3s" }}
-        >
-          📊
-        </div>
-      </div>
-
+    <section className="bg-[#0F0F10] py-16 md:py-24">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
-          {/* Badge */}
           <div className="inline-flex items-center rounded-full bg-[#1F1F1F] px-3 py-1 text-sm mb-6">
             <span className="mr-2 h-2 w-2 rounded-full bg-[#3B82F6]"></span>
             <span className="text-[#F8FAFC]/80 font-inter">How it Works</span>
           </div>
 
-          {/* Title */}
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight font-space-grotesk mb-6">
             Get started in less than a minute.
           </h2>
 
-          {/* Description */}
           <p className="text-lg text-[#F8FAFC]/70 font-inter max-w-2xl mx-auto">
             From sign-up to multichain tracking — no seed phrases, no setup
             pain.
           </p>
         </div>
 
-        {/* Steps con líneas conectoras */}
+        {/* Steps */}
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-4">
             {steps.map((step, index) => {
@@ -165,47 +124,36 @@ export default function HowItWorks() {
                   key={index}
                   className="flex flex-col lg:flex-row items-center"
                 >
-                  {/* Step Card */}
-                  <div
-                    className="text-center group animate-fadeIn"
-                    style={{ animationDelay: `${index * 0.2}s` }}
-                  >
-                    {/* Step Number */}
+                  <div className="text-center group">
                     <div className="inline-flex items-center justify-center w-12 h-12 bg-[#3B82F6] text-white font-bold text-lg rounded-full mb-6 font-space-grotesk">
                       {step.number}
                     </div>
 
-                    {/* Mockup */}
                     <div className="mb-6 transform group-hover:scale-105 transition-transform duration-300 flex justify-center">
                       {step.mockup}
                     </div>
 
-                    {/* Icon */}
                     <div className="mb-4">
                       <div className="w-12 h-12 bg-[#3B82F6]/10 rounded-lg flex items-center justify-center mx-auto group-hover:bg-[#3B82F6]/20 transition-colors duration-300">
                         <IconComponent className="w-6 h-6 text-[#3B82F6]" />
                       </div>
                     </div>
 
-                    {/* Title */}
                     <h3 className="text-xl font-bold font-space-grotesk mb-3 text-[#F8FAFC] max-w-[280px]">
                       {step.title}
                     </h3>
 
-                    {/* Description */}
                     <p className="text-[#F8FAFC]/70 font-inter leading-relaxed max-w-[280px]">
                       {step.description}
                     </p>
                   </div>
 
-                  {/* Línea conectora (solo entre pasos, no después del último) */}
+                  {/* Connector line */}
                   {index < steps.length - 1 && (
                     <div className="hidden lg:flex items-center mx-8">
                       <div className="flex items-center">
-                        {/* Línea punteada */}
-                        <div className="w-16 h-px border-t-2 border-dashed border-[#3B82F6]/30 animate-pulse"></div>
-                        {/* Flecha */}
-                        <ArrowRight className="w-5 h-5 text-[#3B82F6]/50 ml-2 animate-pulse" />
+                        <div className="w-16 h-px border-t-2 border-dashed border-[#3B82F6]/30"></div>
+                        <ArrowRight className="w-5 h-5 text-[#3B82F6]/50 ml-2" />
                       </div>
                     </div>
                   )}
@@ -225,6 +173,6 @@ export default function HowItWorks() {
           </button>
         </div>
       </div>
-    </SharedBackground>
+    </section>
   );
 }

@@ -1,5 +1,4 @@
 import { Check, Zap } from "lucide-react";
-import SharedBackground from "@/components/landing/SharedBackground";
 
 export default function Pricing() {
   const plans = [
@@ -40,65 +39,19 @@ export default function Pricing() {
   ];
 
   return (
-    <SharedBackground className="py-16 md:py-24" variant="pricing">
-      {/* Animaciones crypto específicas para Pricing */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Money and value symbols */}
-        <div
-          className="absolute top-1/5 left-1/8 text-[#10B981]/25 text-4xl animate-bounce"
-          style={{ animationDelay: "1s", animationDuration: "4s" }}
-        >
-          💰
-        </div>
-        <div
-          className="absolute bottom-1/4 right-1/8 text-[#F59E0B]/20 text-3xl animate-pulse"
-          style={{ animationDelay: "2s" }}
-        >
-          💎
-        </div>
-        <div
-          className="absolute top-1/3 right-1/4 text-[#3B82F6]/20 text-2xl animate-bounce"
-          style={{ animationDelay: "0.5s", animationDuration: "3s" }}
-        >
-          📈
-        </div>
-        <div
-          className="absolute bottom-1/3 left-1/4 text-[#8B5CF6]/18 text-2xl animate-pulse"
-          style={{ animationDelay: "3s" }}
-        >
-          ⚡
-        </div>
-
-        {/* Price indicators */}
-        <div
-          className="absolute top-1/6 left-1/3 text-[#10B981]/20 text-xl animate-pulse"
-          style={{ animationDelay: "1.5s" }}
-        >
-          $
-        </div>
-        <div
-          className="absolute bottom-1/6 right-1/3 text-[#10B981]/15 text-lg animate-pulse"
-          style={{ animationDelay: "2.5s" }}
-        >
-          $
-        </div>
-      </div>
-
+    <section className="bg-[#0F0F10] py-16 md:py-24">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
-          {/* Badge */}
           <div className="inline-flex items-center rounded-full bg-[#1F1F1F] px-3 py-1 text-sm mb-6">
             <span className="mr-2 h-2 w-2 rounded-full bg-[#3B82F6]"></span>
             <span className="text-[#F8FAFC]/80 font-inter">Pricing Plan</span>
           </div>
 
-          {/* Title */}
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight font-space-grotesk mb-6">
             Start free. Upgrade anytime.
           </h2>
 
-          {/* Description */}
           <p className="text-lg text-[#F8FAFC]/70 font-inter max-w-2xl mx-auto mb-8">
             Track one wallet for free. Unlock more with Pro.
           </p>
@@ -109,12 +62,11 @@ export default function Pricing() {
           {plans.map((plan, index) => (
             <div
               key={index}
-              className={`relative group animate-fadeIn ${
+              className={`relative group ${
                 plan.popular
                   ? "bg-gradient-to-br from-[#3B82F6]/10 to-[#1E40AF]/10 border-[#3B82F6]/50"
                   : "bg-[#141415] border-gray-800"
               } border rounded-2xl p-8 hover:border-gray-700 transition-all duration-300 hover:transform hover:scale-[1.02]`}
-              style={{ animationDelay: `${index * 0.1}s` }}
             >
               {/* Popular Badge */}
               {plan.popular && (
@@ -135,7 +87,6 @@ export default function Pricing() {
                   {plan.subtitle}
                 </p>
 
-                {/* Price */}
                 <div className="flex items-baseline justify-center space-x-2">
                   <span className="text-4xl md:text-5xl font-bold font-space-grotesk text-[#F8FAFC]">
                     {plan.price}
@@ -183,6 +134,6 @@ export default function Pricing() {
           </p>
         </div>
       </div>
-    </SharedBackground>
+    </section>
   );
 }
