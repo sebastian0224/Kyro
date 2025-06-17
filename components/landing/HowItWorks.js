@@ -1,5 +1,5 @@
 import { UserPlus, Wallet, BarChart3, ArrowRight } from "lucide-react";
-import SharedBackground from "@/components/landing/ShareBackground";
+import SharedBackground from "@/components/landing/SharedBackground";
 
 export default function HowItWorks() {
   const steps = [
@@ -96,7 +96,44 @@ export default function HowItWorks() {
   ];
 
   return (
-    <SharedBackground className="py-16 md:py-24">
+    <SharedBackground className="py-16 md:py-24" variant="howitworks">
+      {/* Animaciones crypto específicas para HowItWorks */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Workflow arrows */}
+        <div
+          className="absolute top-1/4 left-1/6 text-[#10B981]/20 text-3xl animate-bounce"
+          style={{ animationDelay: "1s", animationDuration: "3s" }}
+        >
+          →
+        </div>
+        <div
+          className="absolute top-1/2 right-1/6 text-[#3B82F6]/20 text-3xl animate-bounce"
+          style={{ animationDelay: "2s", animationDuration: "3s" }}
+        >
+          →
+        </div>
+
+        {/* Wallet and connection symbols */}
+        <div
+          className="absolute bottom-1/4 left-1/8 text-[#F59E0B]/18 text-2xl animate-pulse"
+          style={{ animationDelay: "1s" }}
+        >
+          👛
+        </div>
+        <div
+          className="absolute top-1/6 right-1/8 text-[#8B5CF6]/20 text-2xl animate-pulse"
+          style={{ animationDelay: "2s" }}
+        >
+          🔗
+        </div>
+        <div
+          className="absolute bottom-1/6 right-1/4 text-[#10B981]/18 text-2xl animate-pulse"
+          style={{ animationDelay: "3s" }}
+        >
+          📊
+        </div>
+      </div>
+
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
@@ -166,9 +203,9 @@ export default function HowItWorks() {
                     <div className="hidden lg:flex items-center mx-8">
                       <div className="flex items-center">
                         {/* Línea punteada */}
-                        <div className="w-16 h-px border-t-2 border-dashed border-[#3B82F6]/30"></div>
+                        <div className="w-16 h-px border-t-2 border-dashed border-[#3B82F6]/30 animate-pulse"></div>
                         {/* Flecha */}
-                        <ArrowRight className="w-5 h-5 text-[#3B82F6]/50 ml-2" />
+                        <ArrowRight className="w-5 h-5 text-[#3B82F6]/50 ml-2 animate-pulse" />
                       </div>
                     </div>
                   )}

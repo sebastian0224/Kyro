@@ -1,5 +1,5 @@
 import { Check, Zap } from "lucide-react";
-import SharedBackground from "@/components/landing/ShareBackground";
+import SharedBackground from "@/components/landing/SharedBackground";
 
 export default function Pricing() {
   const plans = [
@@ -40,7 +40,50 @@ export default function Pricing() {
   ];
 
   return (
-    <SharedBackground className="py-16 md:py-24">
+    <SharedBackground className="py-16 md:py-24" variant="pricing">
+      {/* Animaciones crypto específicas para Pricing */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Money and value symbols */}
+        <div
+          className="absolute top-1/5 left-1/8 text-[#10B981]/25 text-4xl animate-bounce"
+          style={{ animationDelay: "1s", animationDuration: "4s" }}
+        >
+          💰
+        </div>
+        <div
+          className="absolute bottom-1/4 right-1/8 text-[#F59E0B]/20 text-3xl animate-pulse"
+          style={{ animationDelay: "2s" }}
+        >
+          💎
+        </div>
+        <div
+          className="absolute top-1/3 right-1/4 text-[#3B82F6]/20 text-2xl animate-bounce"
+          style={{ animationDelay: "0.5s", animationDuration: "3s" }}
+        >
+          📈
+        </div>
+        <div
+          className="absolute bottom-1/3 left-1/4 text-[#8B5CF6]/18 text-2xl animate-pulse"
+          style={{ animationDelay: "3s" }}
+        >
+          ⚡
+        </div>
+
+        {/* Price indicators */}
+        <div
+          className="absolute top-1/6 left-1/3 text-[#10B981]/20 text-xl animate-pulse"
+          style={{ animationDelay: "1.5s" }}
+        >
+          $
+        </div>
+        <div
+          className="absolute bottom-1/6 right-1/3 text-[#10B981]/15 text-lg animate-pulse"
+          style={{ animationDelay: "2.5s" }}
+        >
+          $
+        </div>
+      </div>
+
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">

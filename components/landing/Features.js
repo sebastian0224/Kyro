@@ -1,5 +1,5 @@
 import { Wallet, Activity, Shield, Users } from "lucide-react";
-import SharedBackground from "@/components/landing/ShareBackground";
+import SharedBackground from "@/components/landing/SharedBackground";
 
 export default function Features() {
   const features = [
@@ -33,7 +33,48 @@ export default function Features() {
   ];
 
   return (
-    <SharedBackground className="py-16 md:py-24">
+    <SharedBackground className="py-16 md:py-24" variant="features">
+      {/* Animaciones crypto específicas para Features */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Blockchain network visualization */}
+        <div
+          className="absolute top-1/4 left-1/8 w-6 h-6 bg-[#3B82F6]/20 rounded-full animate-ping"
+          style={{ animationDelay: "1s" }}
+        ></div>
+        <div
+          className="absolute top-1/3 left-1/6 w-4 h-4 bg-[#10B981]/25 rounded-full animate-ping"
+          style={{ animationDelay: "2s" }}
+        ></div>
+        <div
+          className="absolute top-1/2 left-1/12 w-5 h-5 bg-[#8B5CF6]/20 rounded-full animate-ping"
+          style={{ animationDelay: "3s" }}
+        ></div>
+
+        {/* Connection lines */}
+        <div
+          className="absolute top-1/4 left-1/8 w-20 h-px bg-gradient-to-r from-[#3B82F6]/20 to-transparent animate-pulse"
+          style={{ animationDelay: "1.5s" }}
+        ></div>
+        <div
+          className="absolute top-1/3 left-1/6 w-16 h-px bg-gradient-to-r from-[#10B981]/20 to-transparent animate-pulse"
+          style={{ animationDelay: "2.5s" }}
+        ></div>
+
+        {/* Security symbols */}
+        <div
+          className="absolute bottom-1/4 right-1/8 text-[#F59E0B]/15 text-2xl animate-pulse"
+          style={{ animationDelay: "1s" }}
+        >
+          🔒
+        </div>
+        <div
+          className="absolute top-1/6 right-1/6 text-[#10B981]/20 text-xl animate-bounce"
+          style={{ animationDelay: "2s", animationDuration: "4s" }}
+        >
+          ⚡
+        </div>
+      </div>
+
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
