@@ -1,9 +1,8 @@
-import { UserButton, currentUser } from "@clerk/nextjs";
-import prisma from "../../lib/prisma";
+import { UserButton } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
 
 export default async function Dashboard() {
   const user = await currentUser();
-  const usersCount = await prisma.user.count();
 
   return (
     <div style={{ padding: 32 }}>
@@ -13,7 +12,6 @@ export default async function Dashboard() {
         Email autenticado:{" "}
         {user?.emailAddresses?.[0]?.emailAddress || "No logueado"}
       </div>
-      <div>Usuarios en la base de datos: {usersCount}</div>
     </div>
   );
 }
