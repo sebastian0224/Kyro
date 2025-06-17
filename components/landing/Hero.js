@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Hero() {
   return (
-    <section className="bg-[#0F0F10] pt-16 md:pt-24">
+    <section className="bg-[#0F0F10] pt-16 md:pt-24 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row lg:items-center lg:gap-12">
           {/* Content */}
@@ -36,7 +36,7 @@ export default function Hero() {
               <img
                 src="/dashboard.png"
                 alt="Kyro dashboard preview"
-                className="rounded-2xl border border-gray-800 shadow-2xl bg-[#141415] object-cover md:object-contain w-auto md:w-auto max-w-none h-auto max-h-[700px] lg:-mr-32 xl:-mr-48 2xl:-mr-64"
+                className="rounded-2xl border border-gray-800 shadow-2xl bg-[#141415] object-cover md:object-contain w-full md:w-auto max-w-none h-auto max-h-[700px] lg:-mr-32 xl:-mr-48 2xl:-mr-64"
                 style={{ minHeight: "350px" }}
               />
             </div>
