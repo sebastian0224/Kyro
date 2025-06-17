@@ -1,38 +1,7 @@
-"use client";
-import { UserPlus, Wallet, BarChart3 } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { UserPlus, Wallet, BarChart3, ArrowRight } from "lucide-react";
+import SharedBackground from "@/components/landing/ShareBackground";
 
 export default function HowItWorks() {
-  const stepsRef = useRef(null);
-
-  useEffect(() => {
-    if (stepsRef.current) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              const steps = entry.target.querySelectorAll(".step-card");
-              steps.forEach((step, index) => {
-                setTimeout(() => {
-                  step.classList.add("animate-fadeIn");
-                }, index * 200);
-              });
-            }
-          });
-        },
-        { threshold: 0.1 }
-      );
-
-      observer.observe(stepsRef.current);
-
-      return () => {
-        if (stepsRef.current) {
-          observer.unobserve(stepsRef.current);
-        }
-      };
-    }
-  }, []);
-
   const steps = [
     {
       number: "01",
@@ -41,7 +10,7 @@ export default function HowItWorks() {
       description:
         "Create your account in seconds using Google or connect with your crypto wallet.",
       mockup: (
-        <div className="bg-[#1A1A1B] rounded-lg p-4 border border-gray-800">
+        <div className="bg-[#1A1A1B] rounded-lg p-4 border border-gray-800 w-full max-w-[280px]">
           <div className="space-y-3">
             <div className="flex items-center space-x-2 bg-[#3B82F6] text-white px-3 py-2 rounded-md text-sm">
               <div className="w-4 h-4 bg-white/20 rounded"></div>
@@ -62,7 +31,7 @@ export default function HowItWorks() {
       description:
         "Connect up to 3 wallets for free across Ethereum, BNB, Polygon, and more.",
       mockup: (
-        <div className="bg-[#1A1A1B] rounded-lg p-4 border border-gray-800">
+        <div className="bg-[#1A1A1B] rounded-lg p-4 border border-gray-800 w-full max-w-[280px]">
           <div className="space-y-2">
             <div className="flex items-center justify-between p-2 bg-[#0F0F10] rounded border border-gray-700">
               <div className="flex items-center space-x-2">
@@ -96,7 +65,7 @@ export default function HowItWorks() {
       description:
         "View balances, assets, and network data — all from one clean dashboard.",
       mockup: (
-        <div className="bg-[#1A1A1B] rounded-lg p-4 border border-gray-800">
+        <div className="bg-[#1A1A1B] rounded-lg p-4 border border-gray-800 w-full max-w-[280px]">
           <div className="space-y-3">
             <div className="flex justify-between items-center">
               <span className="text-sm text-[#F8FAFC]/70">Total Balance</span>
@@ -127,11 +96,8 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section className="relative py-16 md:py-24 bg-[#0F0F10] overflow-hidden">
-      {/* Subtle background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#3B82F6]/5 to-transparent"></div>
-
-      <div className="container mx-auto px-4 relative z-10">
+    <SharedBackground className="py-16 md:py-24">
+      <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
           {/* Badge */}
@@ -152,47 +118,64 @@ export default function HowItWorks() {
           </p>
         </div>
 
-        {/* Steps */}
-        <div
-          ref={stepsRef}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto"
-        >
-          {steps.map((step, index) => {
-            const IconComponent = step.icon;
-            return (
-              <div
-                key={index}
-                className="step-card opacity-0 text-center group"
-              >
-                {/* Step Number */}
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-[#3B82F6] text-white font-bold text-lg rounded-full mb-6 font-space-grotesk">
-                  {step.number}
-                </div>
+        {/* Steps con líneas conectoras */}
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-4">
+            {steps.map((step, index) => {
+              const IconComponent = step.icon;
+              return (
+                <div
+                  key={index}
+                  className="flex flex-col lg:flex-row items-center"
+                >
+                  {/* Step Card */}
+                  <div
+                    className="text-center group animate-fadeIn"
+                    style={{ animationDelay: `${index * 0.2}s` }}
+                  >
+                    {/* Step Number */}
+                    <div className="inline-flex items-center justify-center w-12 h-12 bg-[#3B82F6] text-white font-bold text-lg rounded-full mb-6 font-space-grotesk">
+                      {step.number}
+                    </div>
 
-                {/* Mockup */}
-                <div className="mb-6 transform group-hover:scale-105 transition-transform duration-300">
-                  {step.mockup}
-                </div>
+                    {/* Mockup */}
+                    <div className="mb-6 transform group-hover:scale-105 transition-transform duration-300 flex justify-center">
+                      {step.mockup}
+                    </div>
 
-                {/* Icon */}
-                <div className="mb-4">
-                  <div className="w-12 h-12 bg-[#3B82F6]/10 rounded-lg flex items-center justify-center mx-auto group-hover:bg-[#3B82F6]/20 transition-colors duration-300">
-                    <IconComponent className="w-6 h-6 text-[#3B82F6]" />
+                    {/* Icon */}
+                    <div className="mb-4">
+                      <div className="w-12 h-12 bg-[#3B82F6]/10 rounded-lg flex items-center justify-center mx-auto group-hover:bg-[#3B82F6]/20 transition-colors duration-300">
+                        <IconComponent className="w-6 h-6 text-[#3B82F6]" />
+                      </div>
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-xl font-bold font-space-grotesk mb-3 text-[#F8FAFC] max-w-[280px]">
+                      {step.title}
+                    </h3>
+
+                    {/* Description */}
+                    <p className="text-[#F8FAFC]/70 font-inter leading-relaxed max-w-[280px]">
+                      {step.description}
+                    </p>
                   </div>
+
+                  {/* Línea conectora (solo entre pasos, no después del último) */}
+                  {index < steps.length - 1 && (
+                    <div className="hidden lg:flex items-center mx-8">
+                      <div className="flex items-center">
+                        {/* Línea punteada */}
+                        <div className="w-16 h-px border-t-2 border-dashed border-[#3B82F6]/30"></div>
+                        {/* Flecha */}
+                        <ArrowRight className="w-5 h-5 text-[#3B82F6]/50 ml-2" />
+                      </div>
+                    </div>
+                  )}
                 </div>
-
-                {/* Title */}
-                <h3 className="text-xl font-bold font-space-grotesk mb-3 text-[#F8FAFC]">
-                  {step.title}
-                </h3>
-
-                {/* Description */}
-                <p className="text-[#F8FAFC]/70 font-inter leading-relaxed">
-                  {step.description}
-                </p>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
 
         {/* Bottom CTA */}
@@ -205,6 +188,6 @@ export default function HowItWorks() {
           </button>
         </div>
       </div>
-    </section>
+    </SharedBackground>
   );
 }

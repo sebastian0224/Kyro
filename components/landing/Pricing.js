@@ -1,39 +1,7 @@
-"use client";
 import { Check, Zap } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import SharedBackground from "@/components/landing/ShareBackground";
 
 export default function Pricing() {
-  const pricingRef = useRef(null);
-  const [isAnnual, setIsAnnual] = useState(false);
-
-  useEffect(() => {
-    if (pricingRef.current) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              const cards = entry.target.querySelectorAll(".pricing-card");
-              cards.forEach((card, index) => {
-                setTimeout(() => {
-                  card.classList.add("animate-fadeIn");
-                }, index * 150);
-              });
-            }
-          });
-        },
-        { threshold: 0.1 }
-      );
-
-      observer.observe(pricingRef.current);
-
-      return () => {
-        if (pricingRef.current) {
-          observer.unobserve(pricingRef.current);
-        }
-      };
-    }
-  }, []);
-
   const plans = [
     {
       name: "Free",
@@ -55,9 +23,8 @@ export default function Pricing() {
     {
       name: "Pro",
       subtitle: "For serious crypto traders",
-      price: isAnnual ? "$8" : "$10",
-      originalPrice: isAnnual ? "$10" : null,
-      period: isAnnual ? "/month" : "/month",
+      price: "$10",
+      period: "/month",
       popular: true,
       features: [
         "Everything in Free",
@@ -73,11 +40,8 @@ export default function Pricing() {
   ];
 
   return (
-    <section className="relative py-16 md:py-24 bg-[#0F0F10] overflow-hidden">
-      {/* Subtle background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#3B82F6]/5 to-transparent"></div>
-
-      <div className="container mx-auto px-4 relative z-10">
+    <SharedBackground className="py-16 md:py-24">
+      <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
           {/* Badge */}
@@ -95,58 +59,19 @@ export default function Pricing() {
           <p className="text-lg text-[#F8FAFC]/70 font-inter max-w-2xl mx-auto mb-8">
             Track one wallet for free. Unlock more with Pro.
           </p>
-
-          {/* Billing Toggle */}
-          <div className="flex items-center justify-center space-x-4">
-            <span
-              className={`text-sm font-inter ${
-                !isAnnual ? "text-[#F8FAFC]" : "text-[#F8FAFC]/60"
-              }`}
-            >
-              Monthly plans
-            </span>
-            <button
-              onClick={() => setIsAnnual(!isAnnual)}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                isAnnual ? "bg-[#3B82F6]" : "bg-gray-600"
-              }`}
-            >
-              <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                  isAnnual ? "translate-x-6" : "translate-x-1"
-                }`}
-              />
-            </button>
-            <div className="flex items-center space-x-2">
-              <span
-                className={`text-sm font-inter ${
-                  isAnnual ? "text-[#F8FAFC]" : "text-[#F8FAFC]/60"
-                }`}
-              >
-                Annual plans
-              </span>
-              {isAnnual && (
-                <span className="bg-[#10B981] text-white text-xs px-2 py-1 rounded-full font-inter">
-                  20% off
-                </span>
-              )}
-            </div>
-          </div>
         </div>
 
         {/* Pricing Cards */}
-        <div
-          ref={pricingRef}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {plans.map((plan, index) => (
             <div
               key={index}
-              className={`pricing-card opacity-0 relative group ${
+              className={`relative group animate-fadeIn ${
                 plan.popular
                   ? "bg-gradient-to-br from-[#3B82F6]/10 to-[#1E40AF]/10 border-[#3B82F6]/50"
                   : "bg-[#141415] border-gray-800"
               } border rounded-2xl p-8 hover:border-gray-700 transition-all duration-300 hover:transform hover:scale-[1.02]`}
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
               {/* Popular Badge */}
               {plan.popular && (
@@ -169,11 +94,6 @@ export default function Pricing() {
 
                 {/* Price */}
                 <div className="flex items-baseline justify-center space-x-2">
-                  {plan.originalPrice && (
-                    <span className="text-2xl text-[#F8FAFC]/40 line-through font-space-grotesk">
-                      {plan.originalPrice}
-                    </span>
-                  )}
                   <span className="text-4xl md:text-5xl font-bold font-space-grotesk text-[#F8FAFC]">
                     {plan.price}
                   </span>
@@ -220,6 +140,6 @@ export default function Pricing() {
           </p>
         </div>
       </div>
-    </section>
+    </SharedBackground>
   );
 }

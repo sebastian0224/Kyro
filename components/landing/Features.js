@@ -1,38 +1,7 @@
-"use client";
 import { Wallet, Activity, Shield, Users } from "lucide-react";
-import { useEffect, useRef } from "react";
+import SharedBackground from "@/components/landing/ShareBackground";
 
 export default function Features() {
-  const featuresRef = useRef(null);
-
-  useEffect(() => {
-    if (featuresRef.current) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              const cards = entry.target.querySelectorAll(".feature-card");
-              cards.forEach((card, index) => {
-                setTimeout(() => {
-                  card.classList.add("animate-fadeIn");
-                }, index * 150);
-              });
-            }
-          });
-        },
-        { threshold: 0.1 }
-      );
-
-      observer.observe(featuresRef.current);
-
-      return () => {
-        if (featuresRef.current) {
-          observer.unobserve(featuresRef.current);
-        }
-      };
-    }
-  }, []);
-
   const features = [
     {
       icon: Wallet,
@@ -64,11 +33,8 @@ export default function Features() {
   ];
 
   return (
-    <section className="relative py-16 md:py-24 bg-[#0F0F10] overflow-hidden">
-      {/* Subtle background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#3B82F6]/5 to-transparent"></div>
-
-      <div className="container mx-auto px-4 relative z-10">
+    <SharedBackground className="py-16 md:py-24">
+      <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
           {/* Badge */}
@@ -90,16 +56,14 @@ export default function Features() {
         </div>
 
         {/* Features Grid */}
-        <div
-          ref={featuresRef}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
           {features.map((feature, index) => {
             const IconComponent = feature.icon;
             return (
               <div
                 key={index}
-                className="feature-card opacity-0 group relative bg-[#141415] border border-gray-800 rounded-lg p-6 md:p-8 hover:border-gray-700 transition-all duration-300 hover:transform hover:scale-[1.02]"
+                className="group relative bg-[#141415] border border-gray-800 rounded-lg p-6 md:p-8 hover:border-gray-700 transition-all duration-300 hover:transform hover:scale-[1.02] animate-fadeIn"
+                style={{ animationDelay: `${index * 0.1}s` }}
               >
                 {/* Gradient overlay */}
                 <div
@@ -130,6 +94,6 @@ export default function Features() {
           })}
         </div>
       </div>
-    </section>
+    </SharedBackground>
   );
 }
