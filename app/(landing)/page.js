@@ -6,6 +6,9 @@ import Pricing from "@/components/landing/Pricing";
 import Cta from "@/components/landing/Cta";
 import Footer from "@/components/landing/Footer";
 
+import AutoSignInModal from "@/components/auth/AutoSignInModal";
+import { Suspense } from "react";
+
 export default function Home() {
   return (
     <>
@@ -18,6 +21,9 @@ export default function Home() {
         <Cta />
       </main>
       <Footer />
+      <Suspense>
+        <AutoSignInModal />
+      </Suspense>
     </>
   );
 }

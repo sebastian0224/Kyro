@@ -1,5 +1,6 @@
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
 
 // Configuración de fuentes
 const inter = Inter({
@@ -21,12 +22,14 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${spaceGrotesk.variable}`}
-      style={{ scrollBehavior: "smooth" }}
-    >
-      <body>{children}</body>
-    </html>
+    <ClerkProvider>
+      <html
+        lang="en"
+        className={`${inter.variable} ${spaceGrotesk.variable}`}
+        style={{ scrollBehavior: "smooth" }}
+      >
+        <body>{children}</body>
+      </html>
+    </ClerkProvider>
   );
 }

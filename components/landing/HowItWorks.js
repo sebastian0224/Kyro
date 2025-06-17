@@ -95,7 +95,7 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section className="bg-[#0F0F10] py-16 md:py-24">
+    <section id="how-it-works" className="bg-[#0F0F10] py-16 md:py-24">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
@@ -161,16 +161,6 @@ export default function HowItWorks() {
               );
             })}
           </div>
-        </div>
-
-        {/* Bottom CTA */}
-        <div className="text-center mt-16">
-          <p className="text-[#F8FAFC]/60 font-inter text-sm mb-4">
-            Ready to get started?
-          </p>
-          <button className="bg-[#3B82F6] hover:bg-[#2563EB] text-[#F8FAFC] font-inter px-8 py-3 rounded-md transition-colors duration-300">
-            Start Tracking Now
-          </button>
         </div>
       </div>
     </section>
