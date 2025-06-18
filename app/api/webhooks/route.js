@@ -8,20 +8,26 @@ export async function POST(req) {
     const eventType = evt.type;
 
     if (eventType === "user.created") {
-      await prisma.user.create({
-        data: {
-          id,
-          email: email_addresses[0]?.email_address || "",
-          name: `${first_name || ""} ${last_name || ""}`.trim(),
-          avatarUrl: image_url,
-          plan: "free", // valor por defecto
-        },
+      const existingUser = await prisma.user.findUnique({
+        where: { id },
       });
+
+      if (!existingUser) {
+        await prisma.user.create({
+          data: {
+            id,
+            email: email_addresses[0]?.email_address || "",
+            name: `${first_name || ""} ${last_name || ""}`.trim(),
+            avatarUrl: image_url,
+            plan: "free",
+          },
+        });
+      }
     }
 
     if (eventType === "user.updated") {
       await prisma.user.update({
-        where: { clerkId },
+        where: { id },
         data: {
           email: email_addresses[0]?.email_address || "",
           name: `${first_name || ""} ${last_name || ""}`.trim(),
@@ -32,11 +38,11 @@ export async function POST(req) {
 
     if (eventType === "user.deleted") {
       await prisma.user.delete({
-        where: { clerkId },
+        where: { id },
       });
     }
 
-    console.log(`✅ Webhook processed: ${eventType} for user ${clerkId}`);
+    console.log(`✅ Webhook processed: ${eventType} for user ${id}`);
     return new Response("Webhook processed", { status: 200 });
   } catch (err) {
     console.error("❌ Error processing webhook:", err);
