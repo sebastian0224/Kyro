@@ -3,17 +3,10 @@
 import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  BarChart3,
-  Briefcase,
-  CreditCard,
-  Home,
-  Plus,
-  TrendingUp,
-  X,
-} from "lucide-react";
+import { BarChart3, Briefcase, CreditCard, Home, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const pathname = usePathname();
@@ -102,8 +95,15 @@ const SidebarContent = ({
         className={`p-6 border-b border-kyro-border ${isMobile ? "pt-2" : ""}`}
       >
         <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-kyro-blue rounded-lg flex items-center justify-center">
-            <TrendingUp className="w-5 h-5 text-white" />
+          <div className="w-10 h-10 flex items-center justify-center">
+            <Image
+              src="/logo.png"
+              alt="Kyro Logo"
+              width={40}
+              height={40}
+              className="w-10 h-10 rounded-lg shadow-md bg-white object-contain"
+              priority
+            />
           </div>
           <h1 className="text-xl font-space-grotesk font-bold text-kyro-text">
             KYRO
