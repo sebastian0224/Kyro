@@ -51,6 +51,15 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // KYRO Custom Colors
+        kyro: {
+          bg: "#0F0F10",
+          text: "#F8FAFC",
+          blue: "#3B82F6",
+          "blue-hover": "#2563EB",
+          border: "#374151",
+          sidebar: "#1A1A1B",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
