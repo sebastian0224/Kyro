@@ -4,19 +4,13 @@ import prisma from "@/lib/prisma";
 export async function POST(req) {
   try {
     const evt = await verifyWebhook(req);
-    const {
-      id: clerkId,
-      email_addresses,
-      first_name,
-      last_name,
-      image_url,
-    } = evt.data;
+    const { id, email_addresses, first_name, last_name, image_url } = evt.data;
     const eventType = evt.type;
 
     if (eventType === "user.created") {
       await prisma.user.create({
         data: {
-          clerkId,
+          id,
           email: email_addresses[0]?.email_address || "",
           name: `${first_name || ""} ${last_name || ""}`.trim(),
           avatarUrl: image_url,
