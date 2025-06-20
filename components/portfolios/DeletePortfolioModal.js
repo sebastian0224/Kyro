@@ -66,7 +66,7 @@ export default function DeletePortfolioModal() {
             <AlertTriangle className="h-4 w-4 text-red-400" />
             <AlertDescription className="text-red-300 font-inter text-sm">
               <strong>Are you sure?</strong> This action will permanently delete
-              your portfolio and all associated data. You won't be able to
+              your portfolio and all associated data. You wont be able to
               recover this information.
             </AlertDescription>
           </Alert>
