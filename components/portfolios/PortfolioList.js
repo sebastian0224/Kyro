@@ -10,7 +10,7 @@ export default async function PortfolioList() {
     <ul>
       {portfolios.map((p) => (
         <li key={p.id}>
-          <a href={`/portfolios/${p.id}`}>{p.name}</a>
+          <Link href={`/portfolios/${p.id}`}>{p.name}</Link>
 
           <Button>
             <Link
