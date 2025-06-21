@@ -33,7 +33,7 @@ export default async function PortfoliosPage() {
               className="bg-kyro-blue hover:bg-kyro-blue-hover text-white font-inter font-medium"
             >
               <Link
-                href="/portfolios/@modals/create"
+                href="/portfolios/create"
                 className="flex items-center gap-2"
               >
                 <Plus className="h-4 w-4" />

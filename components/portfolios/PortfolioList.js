@@ -126,7 +126,7 @@ export default async function PortfolioList() {
                     className="flex-1 border-kyro-border hover:bg-kyro-blue/10 hover:border-kyro-blue/30 text-kyro-text font-inter"
                   >
                     <Link
-                      href={`/portfolios/@modals/edit?id=${
+                      href={`/portfolios/edit?id=${
                         portfolio.id
                       }&name=${encodeURIComponent(portfolio.name)}`}
                       className="flex items-center gap-2"
@@ -143,7 +143,7 @@ export default async function PortfolioList() {
                     className="flex-1 border-red-800/30 hover:bg-red-900/10 hover:border-red-700/50 text-red-400 hover:text-red-300 font-inter"
                   >
                     <Link
-                      href={`/portfolios/@modals/delete?id=${portfolio.id}`}
+                      href={`/portfolios/delete?id=${portfolio.id}`}
                       className="flex items-center gap-2"
                     >
                       <Trash2 className="h-3 w-3" />
