@@ -1,5 +1,5 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { deletePortfolioHandler } from "@/lib/actions/form-actions";
@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { AlertTriangle } from "lucide-react";
 
 export default function DeletePortfolioForm() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -17,6 +18,7 @@ export default function DeletePortfolioForm() {
     setIsSubmitting(true);
     try {
       await deletePortfolioHandler(formData);
+      router.back();
     } catch (error) {
       console.error("Error deleting portfolio:", error);
     } finally {

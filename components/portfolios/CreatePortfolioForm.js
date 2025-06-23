@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { createPortfolioHandler } from "@/lib/actions/form-actions";
 
@@ -10,12 +11,14 @@ import { Separator } from "@/components/ui/separator";
 import { Briefcase } from "lucide-react";
 
 export default function CreatePortfolioForm() {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (formData) => {
     setIsSubmitting(true);
     try {
       await createPortfolioHandler(formData);
+      router.back();
     } catch (error) {
       console.error("Error creating portfolio:", error);
     } finally {

@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { updatePortfolioHandler } from "@/lib/actions/form-actions";
@@ -11,6 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { Briefcase } from "lucide-react";
 
 export default function EditPortfolioForm() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const name = searchParams.get("name");
@@ -20,6 +22,7 @@ export default function EditPortfolioForm() {
     setIsSubmitting(true);
     try {
       await updatePortfolioHandler(formData);
+      router.back();
     } catch (error) {
       console.error("Error updating portfolio:", error);
     } finally {
