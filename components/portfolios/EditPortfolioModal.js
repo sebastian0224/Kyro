@@ -24,15 +24,14 @@ export default function EditPortfolioModal() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleClose = () => {
-    router.back();
+    router.replace("/portfolios");
   };
 
   const handleSubmit = async (formData) => {
     setIsSubmitting(true);
     try {
       await updatePortfolioHandler(formData);
-      router.back();
-      router.refresh();
+      router.replace("/portfolios");
     } catch (error) {
       console.error("Error updating portfolio:", error);
     } finally {

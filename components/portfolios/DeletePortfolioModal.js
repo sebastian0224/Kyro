@@ -22,15 +22,14 @@ export default function DeletePortfolioModal() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleClose = () => {
-    router.back();
+    router.replace("/portfolios");
   };
 
   const handleSubmit = async (formData) => {
     setIsSubmitting(true);
     try {
       await deletePortfolioHandler(formData);
-      router.back();
-      router.refresh();
+      router.replace("/portfolios");
     } catch (error) {
       console.error("Error deleting portfolio:", error);
     } finally {
