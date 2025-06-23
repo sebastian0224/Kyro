@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import PortfolioList from "@/components/portfolios/PortfolioList";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";

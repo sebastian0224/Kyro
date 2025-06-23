@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import DeletePortfolioForm from "@/components/portfolios/CreatePortfolioForm";
 import ModalPortfolio from "@/components/portfolios/ModalPortfolio";
 
