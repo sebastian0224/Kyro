@@ -1,14 +1,5 @@
 // CreatePortfolioForm.js
 // This component handles the creation of a new portfolio, including adding wallet addresses before submission.
-// The logic for validation and wallet management is already implemented.
-//
-// TODO (v0): Redesign the visual part using chadcn/ui components and Tailwind CSS utilities.
-// - Keep the layout minimal and professional, inspired by the landing page (see /app/(landing) and /components/landing/).
-// - Use the same color palette and fonts as the landing. You can check globals.css for reference.
-// - You can change the HTML structure and classes, but do not change the logic or data flow.
-// - All error messages, loading states, and feedback should be visually clear and consistent with the rest of the app.
-//
-// v0: Focus on the UI/UX. If you need to add new visual states, coordinate with the logic already present.
 
 "use client";
 
@@ -16,6 +7,21 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createPortfolioHandler } from "@/lib/actions/form-actions";
 import { validateWalletAddress } from "@/lib/moralis/validateWallet";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Plus,
+  X,
+  Wallet,
+  AlertCircle,
+  Loader2,
+  FolderPlus,
+} from "lucide-react";
 
 export default function CreatePortfolioForm({ userPortfolioCount = 0 }) {
   const router = useRouter();
@@ -24,32 +30,41 @@ export default function CreatePortfolioForm({ userPortfolioCount = 0 }) {
   const [walletError, setWalletError] = useState("");
   const [formError, setFormError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isValidatingWallet, setIsValidatingWallet] = useState(false);
 
-  const MAX_WALLETS_PER_PORTFOLIO = 20; // TODO: Reemplazar por lógica de planes cuando se implemente el sistema de pagos
-  const MAX_PORTFOLIOS_PER_USER = 5; // TODO: Reemplazar por lógica de planes cuando se implemente el sistema de pagos
+  const MAX_WALLETS_PER_PORTFOLIO = 20;
+  const MAX_PORTFOLIOS_PER_USER = 5;
 
   async function handleAddWallet() {
+    if (!inputWallet.trim()) return;
+
     setWalletError("");
+    setIsValidatingWallet(true);
 
     if (wallets.length >= MAX_WALLETS_PER_PORTFOLIO) {
       setWalletError(
         `Solo puedes agregar hasta ${MAX_WALLETS_PER_PORTFOLIO} wallets en un portfolio.`
       );
+      setIsValidatingWallet(false);
       return;
     }
 
-    // wallets ya es array de strings, pero lo dejamos explícito
-    const walletStrings = wallets;
-    // TODO: Optimizar para evitar llamadas repetidas a Moralis si la wallet ya fue validada en esta sesión
-    const result = await validateWalletAddress(inputWallet, walletStrings);
+    try {
+      const result = await validateWalletAddress(inputWallet, wallets);
 
-    if (!result.success) {
-      setWalletError(result.error);
-      return;
+      if (!result.success) {
+        setWalletError(result.error);
+        setIsValidatingWallet(false);
+        return;
+      }
+
+      setWallets([...wallets, result.address]);
+      setInputWallet("");
+    } catch (error) {
+      setWalletError("Error al validar la wallet. Intenta de nuevo.");
+    } finally {
+      setIsValidatingWallet(false);
     }
-
-    setWallets([...wallets, result.address]);
-    setInputWallet("");
   }
 
   function handleRemoveWallet(wallet) {
@@ -59,13 +74,15 @@ export default function CreatePortfolioForm({ userPortfolioCount = 0 }) {
   async function handleSubmit(formData) {
     setFormError("");
     setIsSubmitting(true);
+
     if (userPortfolioCount >= MAX_PORTFOLIOS_PER_USER) {
-      alert(
+      setFormError(
         `Solo puedes tener hasta ${MAX_PORTFOLIOS_PER_USER} portfolios. Elimina uno para crear otro.`
       );
       setIsSubmitting(false);
       return;
     }
+
     try {
       const result = await createPortfolioHandler(formData);
       if (result && result.error) {
@@ -84,86 +101,188 @@ export default function CreatePortfolioForm({ userPortfolioCount = 0 }) {
   }
 
   return (
-    <div style={{ maxWidth: 500, margin: "0 auto", padding: "1rem" }}>
-      {/* TODO: Mostrar spinner o feedback visual con V0 cuando isSubmitting sea true */}
+    <div className="max-w-2xl mx-auto space-y-6 px-4">
+      {/* Header */}
+      <div className="flex items-center gap-3">
+        <div
+          className="p-3 rounded-xl"
+          style={{ backgroundColor: "var(--accent)", opacity: 0.1 }}
+        >
+          <FolderPlus className="h-6 w-6" style={{ color: "var(--accent)" }} />
+        </div>
+        <div>
+          <h1 className="font-space-grotesk text-2xl font-bold text-white">
+            Crear Portfolio
+          </h1>
+          <p className="font-inter text-gray-400">
+            Configura un nuevo portfolio para gestionar tus inversiones
+          </p>
+        </div>
+      </div>
+
+      {/* Error Alert */}
       {formError && (
-        <div style={{ color: "#f55", marginBottom: "1rem", fontWeight: 500 }}>
-          {formError}
-        </div>
+        <Alert className="border-red-200 bg-red-50">
+          <AlertCircle className="h-4 w-4 text-red-600" />
+          <AlertDescription className="text-red-800 font-inter">
+            {formError}
+          </AlertDescription>
+        </Alert>
       )}
-      <h1 style={{ marginBottom: "1rem" }}>Create your portfolio</h1>
-      <form action={handleSubmit}>
-        <div style={{ marginBottom: "1rem" }}>
-          <label htmlFor="name" style={{ display: "block", marginBottom: 4 }}>
-            Portfolio Name
-          </label>
-          <input
-            id="name"
-            name="name"
-            placeholder="Enter portfolio name"
-            required
-            style={{
-              color: "#fff",
-              backgroundColor: "#222",
-              padding: "0.5rem",
-              width: "100%",
-            }}
-          />
-        </div>
 
-        <div style={{ marginBottom: "1rem" }}>
-          <label style={{ display: "block", marginBottom: 4 }}>
-            Add Wallets
-          </label>
-          <ul style={{ marginBottom: "0.5rem" }}>
-            {wallets.map((wallet) => (
-              <li key={wallet} style={{ marginBottom: "0.3rem" }}>
-                {wallet}
-                <button
-                  type="button"
-                  onClick={() => handleRemoveWallet(wallet)}
-                  style={{ marginLeft: "0.5rem" }}
+      <form action={handleSubmit} className="space-y-6">
+        {/* Portfolio Name */}
+        <Card className="bg-gray-900 border-gray-700">
+          <CardHeader>
+            <CardTitle className="font-space-grotesk text-lg text-white">
+              Información del Portfolio
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label
+                htmlFor="name"
+                className="font-inter font-medium text-white"
+              >
+                Nombre del Portfolio
+              </Label>
+              <Input
+                id="name"
+                name="name"
+                placeholder="Ej: Portfolio Principal, Inversiones DeFi..."
+                required
+                className="font-inter bg-gray-800 border-gray-600 text-white"
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Wallets Section */}
+        <Card className="bg-gray-900 border-gray-700">
+          <CardHeader>
+            <CardTitle className="font-space-grotesk text-lg flex items-center gap-2 text-white">
+              <Wallet className="h-5 w-5" />
+              Wallets
+              {wallets.length > 0 && (
+                <Badge
+                  variant="secondary"
+                  style={{
+                    backgroundColor: "var(--accent)",
+                    color: "white",
+                    opacity: 0.8,
+                  }}
                 >
-                  Remove
-                </button>
-              </li>
+                  {wallets.length}
+                </Badge>
+              )}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Add Wallet Input */}
+            <div className="space-y-2">
+              <Label className="font-inter font-medium text-white">
+                Agregar Wallet
+              </Label>
+              <div className="flex gap-2">
+                <Input
+                  placeholder="0x... o dirección ENS"
+                  value={inputWallet}
+                  onChange={(e) => setInputWallet(e.target.value)}
+                  className="font-mono font-inter bg-gray-800 border-gray-600 text-white"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleAddWallet();
+                    }
+                  }}
+                />
+                <Button
+                  type="button"
+                  onClick={handleAddWallet}
+                  disabled={isValidatingWallet || !inputWallet.trim()}
+                  className="font-inter bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  {isValidatingWallet ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Plus className="h-4 w-4" />
+                  )}
+                </Button>
+              </div>
+              {walletError && (
+                <p className="font-inter text-sm text-red-400">{walletError}</p>
+              )}
+            </div>
+
+            {/* Wallets List */}
+            {wallets.length > 0 && (
+              <>
+                <Separator style={{ backgroundColor: "var(--border)" }} />
+                <div className="space-y-2">
+                  <Label className="font-inter font-medium text-white">
+                    Wallets Agregadas ({wallets.length}/
+                    {MAX_WALLETS_PER_PORTFOLIO})
+                  </Label>
+                  <div className="space-y-2 max-h-40 overflow-y-auto">
+                    {wallets.map((wallet) => (
+                      <div
+                        key={wallet}
+                        className="flex items-center justify-between p-3 rounded-lg border bg-gray-800 border-gray-600"
+                      >
+                        <span className="font-mono text-sm text-white">
+                          {wallet.slice(0, 8)}...{wallet.slice(-6)}
+                        </span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleRemoveWallet(wallet)}
+                          className="text-red-400 hover:text-red-300 hover:bg-red-400/10"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Hidden inputs for form submission */}
+            {wallets.map((wallet, index) => (
+              <input key={index} type="hidden" name="wallets" value={wallet} />
             ))}
-          </ul>
+          </CardContent>
+        </Card>
 
-          <input
-            placeholder="Enter wallet address"
-            value={inputWallet}
-            onChange={(e) => setInputWallet(e.target.value)}
-            style={{
-              color: "#fff",
-              backgroundColor: "#222",
-              padding: "0.5rem",
-              width: "100%",
-              marginBottom: "0.3rem",
-            }}
-          />
-          {walletError && (
-            <p
-              style={{
-                color: "#f55",
-                fontSize: "0.875rem",
-                marginBottom: "0.5rem",
-              }}
-            >
-              {walletError}
-            </p>
-          )}
-          <button type="button" onClick={handleAddWallet}>
-            Add Wallet
-          </button>
+        {/* Submit Button */}
+        <div className="flex gap-3 pt-4">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => router.back()}
+            className="flex-1 font-inter border-gray-600 text-gray-300 hover:text-white"
+          >
+            Cancelar
+          </Button>
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="flex-1 font-inter font-medium bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                Creando...
+              </>
+            ) : (
+              <>
+                <FolderPlus className="h-4 w-4 mr-2" />
+                Crear Portfolio
+              </>
+            )}
+          </Button>
         </div>
-
-        {/* Wallets ocultas para enviar como FormData */}
-        {wallets.map((wallet, index) => (
-          <input key={index} type="hidden" name="wallets" value={wallet} />
-        ))}
-
-        <button type="submit">Create Portfolio</button>
       </form>
     </div>
   );

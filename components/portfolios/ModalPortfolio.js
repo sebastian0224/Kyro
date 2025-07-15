@@ -15,17 +15,24 @@ export default function ModalPortfolio({ title, description, children }) {
   const handleClose = () => {
     router.back();
   };
+
   return (
     <Dialog open={true} onOpenChange={handleClose}>
-      <DialogContent className="bg-kyro-sidebar border-kyro-border max-w-md">
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
+      <DialogContent className="max-w-4xl w-[90vw] bg-gray-900 border-gray-700">
+        <DialogHeader className="space-y-3">
+          <DialogTitle className="font-space-grotesk text-xl text-white">
+            {title}
+          </DialogTitle>
+          {description && (
+            <DialogDescription className="font-inter text-gray-400">
+              {description}
+            </DialogDescription>
+          )}
         </DialogHeader>
 
-        <Separator className="bg-kyro-border" />
+        <Separator style={{ backgroundColor: "var(--border)" }} />
 
-        {children}
+        <div className="py-4 space-y-4">{children}</div>
       </DialogContent>
     </Dialog>
   );
