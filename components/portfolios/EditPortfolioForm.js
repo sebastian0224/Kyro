@@ -1,66 +1,141 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { updatePortfolioHandler } from "@/lib/actions/form-actions";
+import { validateWalletAddress } from "@/lib/moralis/validateWallet";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { Briefcase } from "lucide-react";
-
-export default function EditPortfolioForm() {
+export default function EditPortfolioForm({
+  id,
+  name: initialName,
+  wallets: initialWallets,
+}) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-  const name = searchParams.get("name");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [name, setName] = useState(initialName);
+  const [inputWallet, setInputWallet] = useState("");
+  const [walletError, setWalletError] = useState("");
+  const [wallets, setWallets] = useState(initialWallets ?? []);
 
-  const handleSubmit = async (formData) => {
-    setIsSubmitting(true);
+  async function handleAddWallet() {
+    setWalletError("");
+
+    const walletStrings = wallets.map((w) =>
+      typeof w === "string" ? w : w.address
+    );
+    const result = await validateWalletAddress(inputWallet, walletStrings);
+
+    if (!result.success) {
+      setWalletError(result.error);
+      return;
+    }
+
+    setWallets([...wallets, result.address]);
+    setInputWallet("");
+  }
+
+  function handleRemoveWallet(walletAddress) {
+    setWallets(
+      wallets.filter((w) => {
+        const addr = typeof w === "string" ? w : w.address;
+        return addr !== walletAddress;
+      })
+    );
+  }
+
+  async function handleSubmit(formData) {
     try {
       await updatePortfolioHandler(formData);
       router.back();
-    } catch (error) {
-      console.error("Error updating portfolio:", error);
-    } finally {
-      setIsSubmitting(false);
+    } catch (err) {
+      console.error(err);
     }
-  };
+  }
 
   return (
-    <form action={handleSubmit} className="space-y-6">
-      <input type="hidden" name="id" value={id || ""} />
+    <div style={{ maxWidth: 500, margin: "0 auto", padding: "1rem" }}>
+      <h1 style={{ marginBottom: "1rem" }}>Edit your portfolio</h1>
+      <form action={handleSubmit}>
+        <input type="hidden" name="id" value={id} />
 
-      <div className="space-y-3">
-        <Label htmlFor="name">Portfolio Name</Label>
-        <div className="relative">
-          <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            id="name"
+        <div style={{ marginBottom: "1rem" }}>
+          <label htmlFor="name" style={{ display: "block", marginBottom: 4 }}>
+            Portfolio Name
+          </label>
+          <input
             name="name"
-            defaultValue={name || ""}
-            placeholder="Portfolio name"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             required
-            className="pl-10"
-            disabled={isSubmitting}
+            style={{
+              color: "#fff",
+              backgroundColor: "#222",
+              padding: "0.5rem",
+              width: "100%",
+            }}
           />
         </div>
-      </div>
 
-      <Separator className="bg-kyro-border" />
+        <div style={{ marginBottom: "1rem" }}>
+          <label style={{ display: "block", marginBottom: 4 }}>Wallets</label>
+          <ul style={{ marginBottom: "0.5rem" }}>
+            {wallets.map((wallet) => {
+              const address =
+                typeof wallet === "string" ? wallet : wallet.address;
+              return (
+                <li key={address} style={{ marginBottom: "0.3rem" }}>
+                  {address}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveWallet(address)}
+                    style={{ marginLeft: "0.5rem" }}
+                  >
+                    Remove
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
 
-      <div className="flex gap-3 pt-2">
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          className="flex-1 bg-kyro-blue text-white"
-        >
-          {isSubmitting ? "Saving..." : "Save Changes"}
-        </Button>
-      </div>
-    </form>
+          <input
+            placeholder="Add wallet"
+            value={inputWallet}
+            onChange={(e) => setInputWallet(e.target.value)}
+            style={{
+              color: "#fff",
+              backgroundColor: "#222",
+              padding: "0.5rem",
+              width: "100%",
+              marginBottom: "0.3rem",
+            }}
+          />
+          {walletError && (
+            <p
+              style={{
+                color: "#f55",
+                fontSize: "0.875rem",
+                marginBottom: "0.5rem",
+              }}
+            >
+              {walletError}
+            </p>
+          )}
+          <button type="button" onClick={handleAddWallet}>
+            Add Wallet
+          </button>
+        </div>
+
+        {wallets.map((wallet, index) => (
+          <input
+            key={index}
+            type="hidden"
+            name="wallets"
+            value={typeof wallet === "string" ? wallet : wallet.address}
+          />
+        ))}
+
+        <button type="submit">Save Changes</button>
+      </form>
+    </div>
   );
 }

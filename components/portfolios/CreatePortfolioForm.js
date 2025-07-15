@@ -1,59 +1,119 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { createPortfolioHandler } from "@/lib/actions/form-actions";
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { Briefcase } from "lucide-react";
+import { validateWalletAddress } from "@/lib/moralis/validateWallet";
 
 export default function CreatePortfolioForm() {
   const router = useRouter();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [wallets, setWallets] = useState([]);
+  const [inputWallet, setInputWallet] = useState("");
+  const [walletError, setWalletError] = useState("");
 
-  const handleSubmit = async (formData) => {
-    setIsSubmitting(true);
+  async function handleAddWallet() {
+    setWalletError(""); // limpiar errores anteriores
+
+    const result = await validateWalletAddress(inputWallet, wallets);
+
+    if (!result.success) {
+      setWalletError(result.error);
+      return;
+    }
+
+    setWallets([...wallets, result.address]);
+    setInputWallet("");
+  }
+
+  function handleRemoveWallet(wallet) {
+    setWallets(wallets.filter((w) => w !== wallet));
+  }
+
+  async function handleSubmit(formData) {
     try {
       await createPortfolioHandler(formData);
       router.back();
-    } catch (error) {
-      console.error("Error creating portfolio:", error);
-    } finally {
-      setIsSubmitting(false);
+    } catch (err) {
+      console.error(err);
     }
-  };
+  }
 
   return (
-    <form action={handleSubmit} className="space-y-6">
-      <div className="space-y-3">
-        <Label htmlFor="name">Portfolio Name</Label>
-        <div className="relative">
-          <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
+    <div style={{ maxWidth: 500, margin: "0 auto", padding: "1rem" }}>
+      <h1 style={{ marginBottom: "1rem" }}>Create your portfolio</h1>
+      <form action={handleSubmit}>
+        <div style={{ marginBottom: "1rem" }}>
+          <label htmlFor="name" style={{ display: "block", marginBottom: 4 }}>
+            Portfolio Name
+          </label>
+          <input
             id="name"
             name="name"
-            placeholder="e.g. Professional Portfolio 2024"
+            placeholder="Enter portfolio name"
             required
-            className="pl-10"
-            disabled={isSubmitting}
+            style={{
+              color: "#fff",
+              backgroundColor: "#222",
+              padding: "0.5rem",
+              width: "100%",
+            }}
           />
         </div>
-      </div>
 
-      <Separator className="bg-kyro-border" />
+        <div style={{ marginBottom: "1rem" }}>
+          <label style={{ display: "block", marginBottom: 4 }}>
+            Add Wallets
+          </label>
+          <ul style={{ marginBottom: "0.5rem" }}>
+            {wallets.map((wallet) => (
+              <li key={wallet} style={{ marginBottom: "0.3rem" }}>
+                {wallet}
+                <button
+                  type="button"
+                  onClick={() => handleRemoveWallet(wallet)}
+                  style={{ marginLeft: "0.5rem" }}
+                >
+                  Remove
+                </button>
+              </li>
+            ))}
+          </ul>
 
-      <div className="flex gap-3 pt-2">
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          className="flex-1 bg-kyro-blue text-white"
-        >
-          {isSubmitting ? "Creating..." : "Create Portfolio"}
-        </Button>
-      </div>
-    </form>
+          <input
+            placeholder="Enter wallet address"
+            value={inputWallet}
+            onChange={(e) => setInputWallet(e.target.value)}
+            style={{
+              color: "#fff",
+              backgroundColor: "#222",
+              padding: "0.5rem",
+              width: "100%",
+              marginBottom: "0.3rem",
+            }}
+          />
+          {walletError && (
+            <p
+              style={{
+                color: "#f55",
+                fontSize: "0.875rem",
+                marginBottom: "0.5rem",
+              }}
+            >
+              {walletError}
+            </p>
+          )}
+          <button type="button" onClick={handleAddWallet}>
+            Add Wallet
+          </button>
+        </div>
+
+        {/* Wallets ocultas para enviar como FormData */}
+        {wallets.map((wallet, index) => (
+          <input key={index} type="hidden" name="wallets" value={wallet} />
+        ))}
+
+        <button type="submit">Create Portfolio</button>
+      </form>
+    </div>
   );
 }
