@@ -5,16 +5,30 @@ import { useRouter } from "next/navigation";
 import { createPortfolioHandler } from "@/lib/actions/form-actions";
 import { validateWalletAddress } from "@/lib/moralis/validateWallet";
 
-export default function CreatePortfolioForm() {
+export default function CreatePortfolioForm({ userPortfolioCount = 0 }) {
   const router = useRouter();
   const [wallets, setWallets] = useState([]);
   const [inputWallet, setInputWallet] = useState("");
   const [walletError, setWalletError] = useState("");
+  const [formError, setFormError] = useState("");
+
+  const MAX_WALLETS_PER_PORTFOLIO = 20; // TODO: Reemplazar por lógica de planes cuando se implemente el sistema de pagos
+  const MAX_PORTFOLIOS_PER_USER = 5; // TODO: Reemplazar por lógica de planes cuando se implemente el sistema de pagos
 
   async function handleAddWallet() {
-    setWalletError(""); // limpiar errores anteriores
+    setWalletError("");
 
-    const result = await validateWalletAddress(inputWallet, wallets);
+    if (wallets.length >= MAX_WALLETS_PER_PORTFOLIO) {
+      setWalletError(
+        `Solo puedes agregar hasta ${MAX_WALLETS_PER_PORTFOLIO} wallets en un portfolio.`
+      );
+      return;
+    }
+
+    // wallets ya es array de strings, pero lo dejamos explícito
+    const walletStrings = wallets;
+    // TODO: Optimizar para evitar llamadas repetidas a Moralis si la wallet ya fue validada en esta sesión
+    const result = await validateWalletAddress(inputWallet, walletStrings);
 
     if (!result.success) {
       setWalletError(result.error);
@@ -30,16 +44,34 @@ export default function CreatePortfolioForm() {
   }
 
   async function handleSubmit(formData) {
+    setFormError("");
+    if (userPortfolioCount >= MAX_PORTFOLIOS_PER_USER) {
+      alert(
+        `Solo puedes tener hasta ${MAX_PORTFOLIOS_PER_USER} portfolios. Elimina uno para crear otro.`
+      );
+      return;
+    }
     try {
-      await createPortfolioHandler(formData);
+      const result = await createPortfolioHandler(formData);
+      if (result && result.error) {
+        setFormError(result.error);
+        return;
+      }
       router.back();
     } catch (err) {
-      console.error(err);
+      setFormError(
+        err?.message || "Ocurrió un error inesperado. Intenta de nuevo."
+      );
     }
   }
 
   return (
     <div style={{ maxWidth: 500, margin: "0 auto", padding: "1rem" }}>
+      {formError && (
+        <div style={{ color: "#f55", marginBottom: "1rem", fontWeight: 500 }}>
+          {formError}
+        </div>
+      )}
       <h1 style={{ marginBottom: "1rem" }}>Create your portfolio</h1>
       <form action={handleSubmit}>
         <div style={{ marginBottom: "1rem" }}>

@@ -13,14 +13,23 @@ export default function DeletePortfolioForm() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState("");
 
   const handleSubmit = async (formData) => {
     setIsSubmitting(true);
+    setFormError("");
     try {
-      await deletePortfolioHandler(formData);
+      const result = await deletePortfolioHandler(formData);
+      if (result && result.error) {
+        setFormError(result.error);
+        setIsSubmitting(false);
+        return;
+      }
       router.back();
     } catch (error) {
-      console.error("Error deleting portfolio:", error);
+      setFormError(
+        error?.message || "Ocurrió un error inesperado. Intenta de nuevo."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -29,6 +38,12 @@ export default function DeletePortfolioForm() {
   return (
     <form action={handleSubmit} className="space-y-6">
       <input type="hidden" name="id" value={id || ""} />
+
+      {formError && (
+        <div style={{ color: "#f55", marginBottom: "1rem", fontWeight: 500 }}>
+          {formError}
+        </div>
+      )}
 
       <div className="space-y-4 text-sm text-red-300">
         <AlertTriangle className="inline mr-2" />

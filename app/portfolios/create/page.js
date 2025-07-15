@@ -2,11 +2,16 @@ export const dynamic = "force-dynamic";
 
 import CreatePortfolioForm from "@/components/portfolios/CreatePortfolioForm";
 import ModalPortfolio from "@/components/portfolios/ModalPortfolio";
+import { auth } from "@clerk/nextjs/server";
+import { readPortfolios } from "@/lib/db/portfolios";
 
-export default function CreateForm() {
+export default async function CreateForm() {
+  const { userId } = await auth();
+  const portfolios = await readPortfolios(userId);
+  const userPortfolioCount = portfolios.length;
   return (
     <ModalPortfolio>
-      <CreatePortfolioForm />
+      <CreatePortfolioForm userPortfolioCount={userPortfolioCount} />
     </ModalPortfolio>
   );
 }

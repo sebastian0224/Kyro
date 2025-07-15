@@ -14,14 +14,25 @@ export default function EditPortfolioForm({
   const [name, setName] = useState(initialName);
   const [inputWallet, setInputWallet] = useState("");
   const [walletError, setWalletError] = useState("");
-  const [wallets, setWallets] = useState(initialWallets ?? []);
+  const [formError, setFormError] = useState("");
+  // Siempre convertir a strings
+  const [wallets, setWallets] = useState(
+    (initialWallets ?? []).map((w) => (typeof w === "string" ? w : w.address))
+  );
+
+  const MAX_WALLETS_PER_PORTFOLIO = 20; // TODO: Reemplazar por lógica de planes cuando se implemente el sistema de pagos
 
   async function handleAddWallet() {
     setWalletError("");
-
-    const walletStrings = wallets.map((w) =>
-      typeof w === "string" ? w : w.address
-    );
+    if (wallets.length >= MAX_WALLETS_PER_PORTFOLIO) {
+      setWalletError(
+        `Solo puedes agregar hasta ${MAX_WALLETS_PER_PORTFOLIO} wallets en un portfolio.`
+      );
+      return;
+    }
+    // Siempre usar solo strings
+    const walletStrings = wallets;
+    // TODO: Optimizar para evitar llamadas repetidas a Moralis si la wallet ya fue validada en esta sesión
     const result = await validateWalletAddress(inputWallet, walletStrings);
 
     if (!result.success) {
@@ -34,25 +45,32 @@ export default function EditPortfolioForm({
   }
 
   function handleRemoveWallet(walletAddress) {
-    setWallets(
-      wallets.filter((w) => {
-        const addr = typeof w === "string" ? w : w.address;
-        return addr !== walletAddress;
-      })
-    );
+    setWallets(wallets.filter((addr) => addr !== walletAddress));
   }
 
   async function handleSubmit(formData) {
+    setFormError("");
     try {
-      await updatePortfolioHandler(formData);
+      const result = await updatePortfolioHandler(formData);
+      if (result && result.error) {
+        setFormError(result.error);
+        return;
+      }
       router.back();
     } catch (err) {
-      console.error(err);
+      setFormError(
+        err?.message || "Ocurrió un error inesperado. Intenta de nuevo."
+      );
     }
   }
 
   return (
     <div style={{ maxWidth: 500, margin: "0 auto", padding: "1rem" }}>
+      {formError && (
+        <div style={{ color: "#f55", marginBottom: "1rem", fontWeight: 500 }}>
+          {formError}
+        </div>
+      )}
       <h1 style={{ marginBottom: "1rem" }}>Edit your portfolio</h1>
       <form action={handleSubmit}>
         <input type="hidden" name="id" value={id} />
@@ -126,12 +144,7 @@ export default function EditPortfolioForm({
         </div>
 
         {wallets.map((wallet, index) => (
-          <input
-            key={index}
-            type="hidden"
-            name="wallets"
-            value={typeof wallet === "string" ? wallet : wallet.address}
-          />
+          <input key={index} type="hidden" name="wallets" value={wallet} />
         ))}
 
         <button type="submit">Save Changes</button>
