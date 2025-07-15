@@ -11,6 +11,7 @@ export default function CreatePortfolioForm({ userPortfolioCount = 0 }) {
   const [inputWallet, setInputWallet] = useState("");
   const [walletError, setWalletError] = useState("");
   const [formError, setFormError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const MAX_WALLETS_PER_PORTFOLIO = 20; // TODO: Reemplazar por lógica de planes cuando se implemente el sistema de pagos
   const MAX_PORTFOLIOS_PER_USER = 5; // TODO: Reemplazar por lógica de planes cuando se implemente el sistema de pagos
@@ -45,16 +46,19 @@ export default function CreatePortfolioForm({ userPortfolioCount = 0 }) {
 
   async function handleSubmit(formData) {
     setFormError("");
+    setIsSubmitting(true);
     if (userPortfolioCount >= MAX_PORTFOLIOS_PER_USER) {
       alert(
         `Solo puedes tener hasta ${MAX_PORTFOLIOS_PER_USER} portfolios. Elimina uno para crear otro.`
       );
+      setIsSubmitting(false);
       return;
     }
     try {
       const result = await createPortfolioHandler(formData);
       if (result && result.error) {
         setFormError(result.error);
+        setIsSubmitting(false);
         return;
       }
       router.back();
@@ -62,11 +66,14 @@ export default function CreatePortfolioForm({ userPortfolioCount = 0 }) {
       setFormError(
         err?.message || "Ocurrió un error inesperado. Intenta de nuevo."
       );
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
   return (
     <div style={{ maxWidth: 500, margin: "0 auto", padding: "1rem" }}>
+      {/* TODO: Mostrar spinner o feedback visual con V0 cuando isSubmitting sea true */}
       {formError && (
         <div style={{ color: "#f55", marginBottom: "1rem", fontWeight: 500 }}>
           {formError}

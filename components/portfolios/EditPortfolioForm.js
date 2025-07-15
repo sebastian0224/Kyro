@@ -19,6 +19,7 @@ export default function EditPortfolioForm({
   const [wallets, setWallets] = useState(
     (initialWallets ?? []).map((w) => (typeof w === "string" ? w : w.address))
   );
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const MAX_WALLETS_PER_PORTFOLIO = 20; // TODO: Reemplazar por lógica de planes cuando se implemente el sistema de pagos
 
@@ -50,10 +51,12 @@ export default function EditPortfolioForm({
 
   async function handleSubmit(formData) {
     setFormError("");
+    setIsSubmitting(true);
     try {
       const result = await updatePortfolioHandler(formData);
       if (result && result.error) {
         setFormError(result.error);
+        setIsSubmitting(false);
         return;
       }
       router.back();
@@ -61,11 +64,14 @@ export default function EditPortfolioForm({
       setFormError(
         err?.message || "Ocurrió un error inesperado. Intenta de nuevo."
       );
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
   return (
     <div style={{ maxWidth: 500, margin: "0 auto", padding: "1rem" }}>
+      {/* TODO: Mostrar spinner o feedback visual con V0 cuando isSubmitting sea true */}
       {formError && (
         <div style={{ color: "#f55", marginBottom: "1rem", fontWeight: 500 }}>
           {formError}

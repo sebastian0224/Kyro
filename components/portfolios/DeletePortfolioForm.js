@@ -37,6 +37,7 @@ export default function DeletePortfolioForm() {
 
   return (
     <form action={handleSubmit} className="space-y-6">
+      {/* TODO: Mostrar spinner o feedback visual con V0 cuando isSubmitting sea true */}
       <input type="hidden" name="id" value={id || ""} />
 
       {formError && (
