@@ -1,3 +1,13 @@
+// portfolios/page.js
+// This is the main page for portfolios. It displays the list of portfolios for the current user.
+//
+// TODO (v0): Redesign the visual part using chadcn/ui components and Tailwind CSS utilities.
+// - Keep the layout minimal and professional, inspired by the landing page (see /app/(landing) and /components/landing/).
+// - Use the same color palette and fonts as the landing. You can check globals.css for reference.
+// - You can change the HTML structure and classes, but do not change the logic or data fetching.
+//
+// v0: Focus on the UI/UX. If you need to add new visual states, coordinate with the logic already present.
+
 export const dynamic = "force-dynamic";
 
 import PortfolioList from "@/components/portfolios/PortfolioList";
