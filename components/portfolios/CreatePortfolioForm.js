@@ -184,7 +184,7 @@ export default function CreatePortfolioForm() {
         </div>
 
         {/* Components Form Buttons */}
-        <FormButtons router={router} />
+        <FormButtons router={router} mode="create" />
 
         {/* Hidden inputs for form submission */}
         {wallets.map((wallet, index) => (

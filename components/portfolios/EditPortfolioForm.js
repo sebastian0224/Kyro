@@ -3,14 +3,24 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { updatePortfolioHandler } from "@/lib/actions/form-actions";
 import { validateWalletAddress } from "@/lib/moralis/validateWallet";
+import { useActionState } from "react";
+import FormButtons from "./FormButtons";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, Loader2 } from "lucide-react";
+
+const initialState = {
+  error: null,
+  nameError: null,
+  walletError: null,
+  success: false,
+};
 
 export default function EditPortfolioForm({
   id,
@@ -18,14 +28,23 @@ export default function EditPortfolioForm({
   wallets: initialWallets,
 }) {
   const router = useRouter();
-  const [name, setName] = useState(initialName);
-  const [inputWallet, setInputWallet] = useState("");
-  const [walletError, setWalletError] = useState("");
-  const [formError, setFormError] = useState("");
+
+  const [state, formAction] = useActionState(
+    updatePortfolioHandler,
+    initialState
+  );
+
+  useEffect(() => {
+    if (state?.success) {
+      router.back();
+    }
+  }, [state]);
+  // State local solo para wallets (esto sigue siendo válido)
   const [wallets, setWallets] = useState(
     (initialWallets ?? []).map((w) => (typeof w === "string" ? w : w.address))
   );
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [inputWallet, setInputWallet] = useState("");
+  const [walletError, setWalletError] = useState("");
   const [isValidatingWallet, setIsValidatingWallet] = useState(false);
 
   const MAX_WALLETS_PER_PORTFOLIO = 20;
@@ -62,48 +81,24 @@ export default function EditPortfolioForm({
     }
   }
 
-  function handleRemoveWallet(walletAddress) {
-    setWallets(wallets.filter((addr) => addr !== walletAddress));
-  }
-
-  async function handleSubmit(formData) {
-    setFormError("");
-    setIsSubmitting(true);
-    try {
-      const result = await updatePortfolioHandler(formData);
-      if (result && result.error) {
-        setFormError(result.error);
-        setIsSubmitting(false);
-        return;
-      }
-      router.push("/portfolios");
-    } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        console.error(err);
-      }
-      setFormError(
-        "Ocurrió un error inesperado. Intenta de nuevo o contacta soporte."
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
+  function handleRemoveWallet(wallet) {
+    setWallets(wallets.filter((w) => w !== wallet));
   }
 
   return (
     <div className="space-y-4">
       {/* Error Alert */}
-      {formError && (
+      {state.error && (
         <Alert className="border-red-200 bg-red-50">
           <AlertCircle className="h-4 w-4 text-red-600" />
           <AlertDescription className="text-red-800 font-inter">
-            {formError}
+            {state.error}
           </AlertDescription>
         </Alert>
       )}
 
-      <form action={handleSubmit} className="space-y-4">
+      <form action={formAction} className="space-y-4">
         <input type="hidden" name="id" value={id} />
-
         {/* Portfolio Name */}
         <div className="space-y-2">
           <label className="font-inter text-sm font-medium text-white">
@@ -111,11 +106,12 @@ export default function EditPortfolioForm({
           </label>
           <Input
             name="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
+            defaultValue={initialName}
             className="font-inter bg-gray-800 border-gray-700 text-white h-10 focus:border-blue-500"
           />
+          {state.nameError && (
+            <p className="text-xs text-red-400">{state.nameError}</p>
+          )}
         </div>
 
         {/* Add Wallets Section */}
@@ -133,25 +129,21 @@ export default function EditPortfolioForm({
           {/* Existing Wallets List */}
           {wallets.length > 0 && (
             <div className="max-h-32 overflow-y-auto space-y-1 pr-1">
-              {wallets.map((wallet) => {
-                const address =
-                  typeof wallet === "string" ? wallet : wallet.address;
-                return (
-                  <div
-                    key={address}
-                    className="group flex items-center p-2 rounded bg-gray-800 border border-gray-700 hover:bg-gray-750 cursor-pointer"
-                    onClick={() => handleRemoveWallet(address)}
-                    title="Click to remove"
-                  >
-                    <span className="font-mono text-xs text-gray-300 flex-1 truncate">
-                      {address}
-                    </span>
-                    <span className="text-xs text-gray-500 group-hover:text-red-400 ml-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      Remove
-                    </span>
-                  </div>
-                );
-              })}
+              {wallets.map((wallet) => (
+                <div
+                  key={wallet}
+                  className="group flex items-center p-2 rounded bg-gray-800 border border-gray-700 hover:bg-gray-750 cursor-pointer"
+                  onClick={() => handleRemoveWallet(wallet)}
+                  title="Click to remove"
+                >
+                  <span className="font-mono text-xs text-gray-300 flex-1 truncate">
+                    {wallet}
+                  </span>
+                  <span className="text-xs text-gray-500 group-hover:text-red-400 ml-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Remove
+                  </span>
+                </div>
+              ))}
             </div>
           )}
 
@@ -190,34 +182,16 @@ export default function EditPortfolioForm({
             {walletError && (
               <p className="font-inter text-xs text-red-400">{walletError}</p>
             )}
+            {state.walletError && (
+              <p className="font-inter text-xs text-red-400">
+                {state.walletError}
+              </p>
+            )}
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-2 pt-2">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => router.back()}
-            className="flex-1 font-inter border-gray-600 text-gray-300 hover:text-white hover:bg-gray-800 h-10 text-sm"
-          >
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            className="flex-1 font-inter font-medium bg-green-600 hover:bg-green-700 text-white h-10 text-sm"
-          >
-            {isSubmitting ? (
-              <>
-                <Loader2 className="h-3 w-3 animate-spin mr-1" />
-                Saving...
-              </>
-            ) : (
-              "Save Changes"
-            )}
-          </Button>
-        </div>
+        <FormButtons router={router} mode="edit" />
 
         {/* Hidden inputs for form submission */}
         {wallets.map((wallet, index) => (
