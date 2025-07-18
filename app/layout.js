@@ -1,6 +1,7 @@
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "sonner";
 
 // Configuración de fuentes
 const inter = Inter({
@@ -28,7 +29,11 @@ export default function RootLayout({ children }) {
         className={`${inter.variable} ${spaceGrotesk.variable}`}
         style={{ scrollBehavior: "smooth" }}
       >
-        <body>{children}</body>
+        <head />
+        <body>
+          <main>{children}</main>
+          <Toaster />
+        </body>
       </html>
     </ClerkProvider>
   );

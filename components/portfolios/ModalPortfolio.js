@@ -5,9 +5,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
 
 export default function ModalPortfolio({ title, description, children }) {
@@ -18,21 +16,18 @@ export default function ModalPortfolio({ title, description, children }) {
 
   return (
     <Dialog open={true} onOpenChange={handleClose}>
-      <DialogContent className="max-w-4xl w-[90vw] bg-gray-900 border-gray-700">
-        <DialogHeader className="space-y-3">
-          <DialogTitle className="font-space-grotesk text-xl text-white">
+      <DialogContent className="max-w-md w-[90vw] max-h-[80vh] bg-gray-900 border-gray-700 p-0">
+        <DialogHeader className="flex flex-col items-start gap-1 p-4 pb-0">
+          <DialogTitle className="font-space-grotesk text-lg font-medium text-white">
             {title}
           </DialogTitle>
           {description && (
-            <DialogDescription className="font-inter text-gray-400">
+            <p className="text-sm text-gray-400 font-inter mt-1">
               {description}
-            </DialogDescription>
+            </p>
           )}
         </DialogHeader>
-
-        <Separator style={{ backgroundColor: "var(--border)" }} />
-
-        <div className="py-4 space-y-4">{children}</div>
+        <div className="px-4 pb-4 overflow-y-auto">{children}</div>
       </DialogContent>
     </Dialog>
   );

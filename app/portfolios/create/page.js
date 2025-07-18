@@ -10,7 +10,10 @@ export default async function CreateForm() {
   const portfolios = await readPortfolios(userId);
   const userPortfolioCount = portfolios.length;
   return (
-    <ModalPortfolio>
+    <ModalPortfolio
+      title="Crear Portfolio"
+      description="Configura un nuevo portfolio para gestionar tus inversiones"
+    >
       <CreatePortfolioForm userPortfolioCount={userPortfolioCount} />
     </ModalPortfolio>
   );
