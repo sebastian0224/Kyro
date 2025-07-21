@@ -41,7 +41,7 @@ export default function DeletePortfolioForm({ id }) {
           </h3>
           <p className="font-inter text-xs text-gray-400">
             This action will permanently delete this portfolio and all its
-            configuration. You won't be able to recover this information.
+            configuration. You wont be able to recover this information.
           </p>
         </div>
       </div>

@@ -23,7 +23,7 @@ export default async function PortfolioList() {
           <FolderOpen className="h-12 w-12" />
         </div>
         <h3 className="font-space-grotesk text-xl font-semibold mb-2 text-white">
-          You don't have any portfolios yet
+          You dont have any portfolios yet
         </h3>
         <p className="font-inter mb-6 text-gray-400">
           Create your first portfolio to start managing your investments
