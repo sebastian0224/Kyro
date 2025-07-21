@@ -27,7 +27,7 @@ export default function FormButtons({ router, mode = "create" }) {
       <Button
         type="button"
         variant="outline"
-        onClick={() => router.back()}
+        onClick={() => router.push("/portfolios")}
         className="flex-1 h-10"
       >
         Cancel

@@ -1,6 +1,3 @@
-// DeletePortfolioForm.js
-// This component handles the deletion of a portfolio. It shows a warning and asks for confirmation before deleting.
-
 "use client";
 import { deletePortfolioHandler } from "@/lib/actions/form-actions";
 import { useActionState } from "react";

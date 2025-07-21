@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { useRouter, usePathname, useParams } from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import {
   Dialog,
@@ -12,62 +12,12 @@ import {
 
 export default function ModalPortfolio({ title, description, children }) {
   const router = useRouter();
-  const pathname = usePathname();
-  const params = useParams();
   const [isOpen, setIsOpen] = useState(true);
-  const isClosingRef = useRef(false);
 
   const handleClose = () => {
-    if (isClosingRef.current) return;
-
-    isClosingRef.current = true;
     setIsOpen(false);
-
-    setTimeout(() => {
-      router.back();
-    }, 150);
+    router.push("/portfolios");
   };
-
-  useEffect(() => {
-    if (isClosingRef.current) return;
-
-    // Si la ruta cambió a /portfolios, cerrar el modal
-    if (pathname === "/portfolios") {
-      setIsOpen(false);
-      return;
-    }
-
-    // ✅ FIX: Detectar si estamos en cualquier ruta de modal
-    const isModalRoute =
-      pathname.includes("/edit") ||
-      pathname.includes("/delete") ||
-      pathname.includes("/create");
-
-    // Si estamos en una ruta de modal y tiene portfolioId (para edit/delete)
-    if (isModalRoute && !isOpen) {
-      // Para create no necesita portfolioId, para edit/delete sí
-      const needsPortfolioId =
-        pathname.includes("/edit") || pathname.includes("/delete");
-
-      if (!needsPortfolioId || params?.portfolioId) {
-        setIsOpen(true);
-      }
-    }
-  }, [pathname, params?.portfolioId, isOpen]);
-
-  useEffect(() => {
-    isClosingRef.current = false;
-  }, [params?.portfolioId]);
-
-  useEffect(() => {
-    // Si no hay portfolioId cuando se necesita (rutas edit/delete), cerrar modal
-    const needsPortfolioId =
-      pathname.includes("/edit") || pathname.includes("/delete");
-
-    if (needsPortfolioId && !params?.portfolioId && isOpen) {
-      handleClose();
-    }
-  }, [params?.portfolioId, pathname, isOpen]);
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>

@@ -1,6 +1,3 @@
-// EditPortfolioForm.js
-// This component allows editing an existing portfolio, including its name and associated wallet addresses.
-
 "use client";
 
 import { useState } from "react";
@@ -32,7 +29,6 @@ export default function EditPortfolioForm({
     initialState
   );
 
-  // State local solo para wallets (esto sigue siendo válido)
   const [wallets, setWallets] = useState(
     (initialWallets ?? []).map((w) => (typeof w === "string" ? w : w.address))
   );
@@ -50,7 +46,7 @@ export default function EditPortfolioForm({
 
     if (wallets.length >= MAX_WALLETS_PER_PORTFOLIO) {
       setWalletError(
-        `Solo puedes agregar hasta ${MAX_WALLETS_PER_PORTFOLIO} wallets en un portfolio.`
+        `You can only add up to ${MAX_WALLETS_PER_PORTFOLIO} wallets in a portfolio.`
       );
       setIsValidatingWallet(false);
       return;
@@ -68,7 +64,7 @@ export default function EditPortfolioForm({
       setWallets([...wallets, result.address]);
       setInputWallet("");
     } catch (error) {
-      setWalletError("Error al validar la wallet. Intenta de nuevo.");
+      setWalletError("Error validating wallet. Please try again.");
     } finally {
       setIsValidatingWallet(false);
     }

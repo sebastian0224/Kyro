@@ -1,6 +1,3 @@
-// CreatePortfolioForm.js
-// This component handles the creation of a new portfolio, including adding wallet addresses before submission.
-
 "use client";
 
 import { useState } from "react";
@@ -28,7 +25,7 @@ export default function CreatePortfolioForm() {
     initialState
   );
 
-  // State local solo para wallets (esto sigue siendo válido)
+  // Local state only for wallets (this is still valid)
   const [wallets, setWallets] = useState([]);
   const [inputWallet, setInputWallet] = useState("");
   const [walletError, setWalletError] = useState("");
@@ -44,7 +41,7 @@ export default function CreatePortfolioForm() {
 
     if (wallets.length >= MAX_WALLETS_PER_PORTFOLIO) {
       setWalletError(
-        `Solo puedes agregar hasta ${MAX_WALLETS_PER_PORTFOLIO} wallets en un portfolio.`
+        `You can only add up to ${MAX_WALLETS_PER_PORTFOLIO} wallets in a portfolio.`
       );
       setIsValidatingWallet(false);
       return;
@@ -62,7 +59,7 @@ export default function CreatePortfolioForm() {
       setWallets([...wallets, result.address]);
       setInputWallet("");
     } catch (error) {
-      setWalletError("Error al validar la wallet. Intenta de nuevo.");
+      setWalletError("Error validating wallet. Please try again.");
     } finally {
       setIsValidatingWallet(false);
     }

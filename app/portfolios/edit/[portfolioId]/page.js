@@ -1,6 +1,3 @@
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 import EditPortfolioForm from "@/components/portfolios/EditPortfolioForm";
 import ModalPortfolio from "@/components/portfolios/ModalPortfolio";
 
@@ -9,23 +6,27 @@ import { getPortfolioById } from "@/lib/db/portfolios";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
-export default async function EditForm({ params }) {
-  const { portfolioId } = params;
+export default async function EditFormModal({ params }) {
+  const { portfolioId } = await params;
   const { userId } = await auth();
 
+  if (!portfolioId || !userId) {
+    redirect("/portfolios");
+  }
+
+  const portfolio = await getPortfolioById(portfolioId, userId);
+
+  if (!portfolio) {
+    redirect(`/portfolios`);
+  }
+
   try {
-    const portfolio = await getPortfolioById(portfolioId, userId);
-
-    if (!portfolio) {
-      redirect(`/portfolios`);
-    }
-
     const wallets = await readWallets(portfolioId);
 
     return (
       <ModalPortfolio
-        title="Editar Portfolio"
-        description="Modifica la configuración de tu portfolio"
+        title="Edit Portfolio"
+        description="Modify your portfolio configuration"
       >
         <EditPortfolioForm
           id={portfolioId}

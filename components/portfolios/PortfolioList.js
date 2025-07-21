@@ -23,10 +23,10 @@ export default async function PortfolioList() {
           <FolderOpen className="h-12 w-12" />
         </div>
         <h3 className="font-space-grotesk text-xl font-semibold mb-2 text-white">
-          No tienes portfolios aún
+          You don't have any portfolios yet
         </h3>
         <p className="font-inter mb-6 text-gray-400">
-          Crea tu primer portfolio para comenzar a gestionar tus inversiones
+          Create your first portfolio to start managing your investments
         </p>
         <Button
           asChild
@@ -38,7 +38,7 @@ export default async function PortfolioList() {
         >
           <Link href="/portfolios/create" className="flex items-center gap-2">
             <Plus className="h-4 w-4" />
-            Crear Portfolio
+            Create Portfolio
           </Link>
         </Button>
       </div>
@@ -50,7 +50,7 @@ export default async function PortfolioList() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <h2 className="font-space-grotesk text-2xl font-semibold text-white">
-            Mis Portfolios
+            My Portfolios
           </h2>
           <Badge
             variant="secondary"
@@ -74,7 +74,7 @@ export default async function PortfolioList() {
           >
             <CardContent className="p-6">
               <div className="flex items-start justify-between">
-                {/* Información del Portfolio */}
+                {/* Portfolio Information */}
                 <div className="flex-1 space-y-3">
                   <div className="flex items-start gap-4">
                     <div
@@ -90,15 +90,15 @@ export default async function PortfolioList() {
                       <div className="flex items-center gap-2 mb-3">
                         <Wallet className="h-4 w-4 text-gray-400" />
                         <span className="font-inter text-sm text-gray-400">
-                          {portfolio.wallets?.length || 0} wallets conectadas
+                          {portfolio.wallets?.length || 0} connected wallets
                         </span>
                       </div>
 
-                      {/* Lista de wallets */}
+                      {/* Wallets List */}
                       {portfolio.wallets && portfolio.wallets.length > 0 && (
                         <div className="space-y-2">
                           <p className="font-inter text-xs font-medium text-gray-400">
-                            WALLETS CONECTADAS
+                            CONNECTED WALLETS
                           </p>
                           <div className="flex flex-wrap gap-2">
                             {portfolio.wallets.slice(0, 4).map((wallet) => (
@@ -112,7 +112,7 @@ export default async function PortfolioList() {
                             ))}
                             {portfolio.wallets.length > 4 && (
                               <div className="font-mono text-xs px-3 py-1 rounded-full bg-gray-700 border border-gray-600 text-gray-300">
-                                +{portfolio.wallets.length - 4} más
+                                +{portfolio.wallets.length - 4} more
                               </div>
                             )}
                           </div>
@@ -122,7 +122,7 @@ export default async function PortfolioList() {
                   </div>
                 </div>
 
-                {/* Acciones */}
+                {/* Actions */}
                 <div className="flex items-center gap-2 ml-4">
                   <Button
                     asChild
@@ -134,7 +134,7 @@ export default async function PortfolioList() {
                       className="flex items-center gap-2"
                     >
                       <Eye className="h-4 w-4" />
-                      Ver
+                      View
                     </Link>
                   </Button>
 

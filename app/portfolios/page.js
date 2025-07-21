@@ -31,7 +31,7 @@ export default function PortfoliosPage() {
                     Portfolios
                   </h1>
                   <p className="font-inter text-lg text-gray-400">
-                    Gestiona y organiza todos tus proyectos profesionales
+                    Manage and organize all your professional projects
                   </p>
                 </div>
               </div>
@@ -51,7 +51,7 @@ export default function PortfoliosPage() {
                 className="flex items-center gap-2"
               >
                 <Plus className="h-5 w-5" />
-                Nuevo Portfolio
+                New Portfolio
               </Link>
             </Button>
           </div>
