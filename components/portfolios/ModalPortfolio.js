@@ -1,23 +1,24 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useRouter, usePathname, useParams } from "next/navigation";
+
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useRouter, usePathname, useParams } from "next/navigation";
 
 export default function ModalPortfolio({ title, description, children }) {
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
   const [isOpen, setIsOpen] = useState(true);
-  const isClosingRef = useRef(false); // Flag para evitar conflictos
+  const isClosingRef = useRef(false);
 
   const handleClose = () => {
-    if (isClosingRef.current) return; // Prevenir múltiples cierres
+    if (isClosingRef.current) return;
 
     isClosingRef.current = true;
     setIsOpen(false);
@@ -27,9 +28,7 @@ export default function ModalPortfolio({ title, description, children }) {
     }, 150);
   };
 
-  // Efecto principal para manejar el estado del modal
   useEffect(() => {
-    // Si estamos cerrando, no hacer nada más
     if (isClosingRef.current) return;
 
     // Si la ruta cambió a /portfolios, cerrar el modal
@@ -38,16 +37,37 @@ export default function ModalPortfolio({ title, description, children }) {
       return;
     }
 
-    // Si estamos en una ruta de edición y el modal está cerrado, abrirlo
-    if (pathname.includes("/edit") && params?.portfolioId && !isOpen) {
-      setIsOpen(true);
+    // ✅ FIX: Detectar si estamos en cualquier ruta de modal
+    const isModalRoute =
+      pathname.includes("/edit") ||
+      pathname.includes("/delete") ||
+      pathname.includes("/create");
+
+    // Si estamos en una ruta de modal y tiene portfolioId (para edit/delete)
+    if (isModalRoute && !isOpen) {
+      // Para create no necesita portfolioId, para edit/delete sí
+      const needsPortfolioId =
+        pathname.includes("/edit") || pathname.includes("/delete");
+
+      if (!needsPortfolioId || params?.portfolioId) {
+        setIsOpen(true);
+      }
     }
   }, [pathname, params?.portfolioId, isOpen]);
 
-  // Reset del flag cuando el componente se remonta
   useEffect(() => {
     isClosingRef.current = false;
   }, [params?.portfolioId]);
+
+  useEffect(() => {
+    // Si no hay portfolioId cuando se necesita (rutas edit/delete), cerrar modal
+    const needsPortfolioId =
+      pathname.includes("/edit") || pathname.includes("/delete");
+
+    if (needsPortfolioId && !params?.portfolioId && isOpen) {
+      handleClose();
+    }
+  }, [params?.portfolioId, pathname, isOpen]);
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
