@@ -14,7 +14,7 @@ export default function ShowToastOnError() {
       const params = new URLSearchParams(window.location.search);
       if (params.get("error") === "not-authorized") {
         toast.error(
-          "No tienes permiso para acceder a ese portfolio o no existe."
+          "You are not authorized to access this portfolio or it does not exist."
         );
         // Limpiar el error de la URL para que no se repita
         params.delete("error");

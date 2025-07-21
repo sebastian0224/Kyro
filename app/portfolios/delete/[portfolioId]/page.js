@@ -10,13 +10,13 @@ export default async function DeleteFormModal({ params }) {
   const { userId } = await auth();
 
   if (!portfolioId || !userId) {
-    redirect("/portfolios");
+    redirect("/portfolios?error=not-authorized");
   }
 
   const portfolio = await getPortfolioById(portfolioId, userId);
 
   if (!portfolio) {
-    redirect("/portfolios");
+    redirect("/portfolios?error=not-authorized");
   }
 
   return (

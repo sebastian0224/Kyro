@@ -11,13 +11,13 @@ export default async function EditFormModal({ params }) {
   const { userId } = await auth();
 
   if (!portfolioId || !userId) {
-    redirect("/portfolios");
+    redirect("/portfolios?error=not-authorized");
   }
 
   const portfolio = await getPortfolioById(portfolioId, userId);
 
   if (!portfolio) {
-    redirect(`/portfolios`);
+    redirect(`/portfolios?error=not-authorized`);
   }
 
   try {
@@ -37,6 +37,6 @@ export default async function EditFormModal({ params }) {
     );
   } catch (error) {
     console.error("[EditFormModal]", error);
-    redirect(`/portfolios`);
+    redirect(`/portfolios?error=not-authorized`);
   }
 }
