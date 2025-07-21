@@ -3,7 +3,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { updatePortfolioHandler } from "@/lib/actions/form-actions";
 import { validateWalletAddress } from "@/lib/moralis/validateWallet";
@@ -19,7 +19,6 @@ const initialState = {
   error: null,
   nameError: null,
   walletError: null,
-  success: false,
 };
 
 export default function EditPortfolioForm({
@@ -28,17 +27,11 @@ export default function EditPortfolioForm({
   wallets: initialWallets,
 }) {
   const router = useRouter();
-
   const [state, formAction] = useActionState(
     updatePortfolioHandler,
     initialState
   );
 
-  useEffect(() => {
-    if (state?.success) {
-      router.back();
-    }
-  }, [state]);
   // State local solo para wallets (esto sigue siendo válido)
   const [wallets, setWallets] = useState(
     (initialWallets ?? []).map((w) => (typeof w === "string" ? w : w.address))

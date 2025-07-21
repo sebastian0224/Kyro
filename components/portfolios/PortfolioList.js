@@ -20,10 +20,7 @@ export default async function PortfolioList() {
           className="mx-auto w-24 h-24 rounded-full flex items-center justify-center mb-6"
           style={{ backgroundColor: "var(--accent)", opacity: 0.1 }}
         >
-          <FolderOpen
-            className="h-12 w-12"
-            style={{ color: "var(--accent)" }}
-          />
+          <FolderOpen className="h-12 w-12" />
         </div>
         <h3 className="font-space-grotesk text-xl font-semibold mb-2 text-white">
           No tienes portfolios aún
@@ -84,10 +81,7 @@ export default async function PortfolioList() {
                       className="p-3 rounded-lg"
                       style={{ backgroundColor: "var(--accent)", opacity: 0.1 }}
                     >
-                      <Wallet
-                        className="h-6 w-6"
-                        style={{ color: "var(--accent)" }}
-                      />
+                      <Wallet className="h-6 w-6" />
                     </div>
                     <div className="flex-1">
                       <CardTitle className="font-space-grotesk text-xl text-white mb-2">
@@ -150,7 +144,7 @@ export default async function PortfolioList() {
                     className="font-inter bg-gray-700 hover:bg-gray-600 text-white border-0"
                   >
                     <Link
-                      href={`/portfolios/edit?id=${portfolio.id}`}
+                      href={`/portfolios/edit/${portfolio.id}`}
                       className="flex items-center gap-2"
                     >
                       <Edit3 className="h-4 w-4" />
@@ -165,7 +159,7 @@ export default async function PortfolioList() {
                     style={{ borderColor: "var(--border)" }}
                   >
                     <Link
-                      href={`/portfolios/delete?id=${portfolio.id}`}
+                      href={`/portfolios/delete/${portfolio.id}`}
                       className="flex items-center gap-2"
                     >
                       <Trash2 className="h-4 w-4" />

@@ -2,18 +2,16 @@
 // This component handles the deletion of a portfolio. It shows a warning and asks for confirmation before deleting.
 
 "use client";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { deletePortfolioHandler } from "@/lib/actions/form-actions";
 import { useActionState } from "react";
 import FormButtons from "./FormButtons";
+import { useRouter } from "next/navigation";
 
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertTriangle, AlertCircle } from "lucide-react";
 
 const initialState = {
   error: null,
-  success: false,
 };
 
 export default function DeletePortfolioForm({ id }) {
@@ -22,12 +20,6 @@ export default function DeletePortfolioForm({ id }) {
     deletePortfolioHandler,
     initialState
   );
-
-  useEffect(() => {
-    if (state?.success) {
-      router.back();
-    }
-  }, [state]);
 
   return (
     <div className="space-y-6">

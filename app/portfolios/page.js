@@ -24,10 +24,7 @@ export default function PortfoliosPage() {
                   className="p-3 rounded-xl"
                   style={{ backgroundColor: "var(--accent)", opacity: 0.1 }}
                 >
-                  <Briefcase
-                    className="h-8 w-8"
-                    style={{ color: "var(--accent)" }}
-                  />
+                  <Briefcase className="h-8 w-8" />
                 </div>
                 <div>
                   <h1 className="font-space-grotesk text-4xl font-bold text-white">

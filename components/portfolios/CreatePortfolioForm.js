@@ -3,7 +3,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createPortfolioHandler } from "@/lib/actions/form-actions";
 import { validateWalletAddress } from "@/lib/moralis/validateWallet";
@@ -19,21 +19,15 @@ const initialState = {
   error: null,
   nameError: null,
   walletError: null,
-  success: false,
 };
 
 export default function CreatePortfolioForm() {
   const router = useRouter();
-
   const [state, formAction] = useActionState(
     createPortfolioHandler,
     initialState
   );
-  useEffect(() => {
-    if (state?.success) {
-      router.back();
-    }
-  }, [state]);
+
   // State local solo para wallets (esto sigue siendo válido)
   const [wallets, setWallets] = useState([]);
   const [inputWallet, setInputWallet] = useState("");
