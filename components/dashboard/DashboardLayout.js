@@ -1,22 +1,30 @@
 "use client";
 
 import { useState } from "react";
-import Sidebar from "./Sidebar";
-import TopBar from "./TopBar";
+import Sidebar from "./sidebar/Sidebar";
+import TopBar from "./topbar/TopBar";
 
-const DashboardLayout = ({ children }) => {
+export default function DashboardLayout({ children, portfolioId }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-kyro-bg text-kyro-text font-inter">
       <div className="flex">
         {/* Sidebar */}
-        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        <Sidebar
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          portfolioId={portfolioId}
+        />
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col min-h-screen lg:ml-64">
           {/* Top Bar */}
-          <TopBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+          <TopBar
+            sidebarOpen={sidebarOpen}
+            setSidebarOpen={setSidebarOpen}
+            portfolioId={portfolioId}
+          />
 
           {/* Page Content */}
           <main className="flex-1 p-4 lg:p-6">
@@ -34,6 +42,4 @@ const DashboardLayout = ({ children }) => {
       )}
     </div>
   );
-};
-
-export default DashboardLayout;
+}
