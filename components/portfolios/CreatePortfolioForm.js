@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createPortfolioHandler } from "@/lib/actions/form-actions";
-import { validateWalletAddress } from "@/lib/moralis/validateWallet";
+import { validateWalletAddress } from "@/lib/moralis/walletsUtils";
 import { useActionState } from "react";
 import FormButtons from "./FormButtons";
 

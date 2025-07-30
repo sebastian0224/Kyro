@@ -6,7 +6,12 @@ import { Button } from "@/components/ui/button";
 
 import SidebarContent from "./SidebarContent";
 
-export default function Sidebar({ sidebarOpen, setSidebarOpen, portfolioId }) {
+export default function Sidebar({
+  sidebarOpen,
+  setSidebarOpen,
+  portfolioId,
+  wallets,
+}) {
   const pathname = usePathname();
   const menuItems = [
     {
@@ -44,6 +49,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, portfolioId }) {
           menuItems={menuItems}
           pathname={pathname}
           onLinkClick={handleLinkClick}
+          wallets={wallets}
         />
       </div>
 
@@ -70,6 +76,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, portfolioId }) {
           pathname={pathname}
           onLinkClick={handleLinkClick}
           isMobile={true}
+          wallets={wallets}
         />
       </div>
     </>

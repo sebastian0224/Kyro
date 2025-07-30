@@ -4,7 +4,7 @@ import { useState } from "react";
 import Sidebar from "./sidebar/Sidebar";
 import TopBar from "./topbar/TopBar";
 
-export default function DashboardLayout({ children, portfolioId }) {
+export default function DashboardLayout({ children, portfolioId, wallets }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -15,6 +15,7 @@ export default function DashboardLayout({ children, portfolioId }) {
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
           portfolioId={portfolioId}
+          wallets={wallets}
         />
 
         {/* Main Content */}

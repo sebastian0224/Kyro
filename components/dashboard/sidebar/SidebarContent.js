@@ -6,17 +6,22 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Briefcase } from "lucide-react";
 import LogoSection from "./LogoSection";
+import PortfolioValueCard from "./PortfolioValueCard";
 
 export default function SidebarContent({
   menuItems,
   pathname,
   onLinkClick,
   isMobile = false,
+  wallets,
 }) {
   return (
     <>
       {/* Logo Section */}
-      <LogoSection isMobile={isMobile} />
+      {/* <LogoSection isMobile={isMobile} /> */}
+      <div>
+        <PortfolioValueCard portfolioName="My Portfolio 1" wallets={wallets} />
+      </div>
 
       {/* Manage Portfolio Button */}
       <div className="p-4">
