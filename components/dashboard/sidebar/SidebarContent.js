@@ -20,7 +20,7 @@ export default function SidebarContent({
       {/* Logo Section */}
       {/* <LogoSection isMobile={isMobile} /> */}
       <div>
-        <PortfolioValueCard portfolioName="My Portfolio 1" wallets={wallets} />
+        {/* <PortfolioValueCard portfolioName="My Portfolio 1" wallets={wallets} /> */}
       </div>
 
       {/* Manage Portfolio Button */}

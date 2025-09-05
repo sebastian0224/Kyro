@@ -28,11 +28,11 @@ export default async function EditFormModal({ params }) {
         title="Edit Portfolio"
         description="Modify your portfolio configuration"
       >
-        <EditPortfolioForm
+        {/* <EditPortfolioForm
           id={portfolioId}
           name={portfolio.name}
           wallets={wallets}
-        />
+        /> */}
       </ModalPortfolio>
     );
   } catch (error) {
