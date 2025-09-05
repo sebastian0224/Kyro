@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createPortfolioHandler } from "@/lib/actions/form-actions";
-import { validateWalletAddress } from "@/lib/moralis/walletsUtils";
+import {
+  createPortfolioHandler,
+  validateWalletAction,
+} from "@/lib/actions/form-actions";
 import { useActionState } from "react";
 import FormButtons from "./FormButtons";
 
@@ -48,7 +50,7 @@ export default function CreatePortfolioForm() {
     }
 
     try {
-      const result = await validateWalletAddress(inputWallet, wallets);
+      const result = await validateWalletAction(inputWallet, wallets);
 
       if (!result.success) {
         setWalletError(result.error);

@@ -21,7 +21,7 @@ export default async function DeleteFormModal({ params }) {
 
   return (
     <ModalPortfolio title="Delete Portfolio">
-      {/* <DeletePortfolioForm id={portfolioId} /> */}
+      <DeletePortfolioForm id={portfolioId} />
     </ModalPortfolio>
   );
 }

@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { updatePortfolioHandler } from "@/lib/actions/form-actions";
-import { validateWalletAddress } from "@/lib/moralis/walletsUtils";
+import {
+  updatePortfolioHandler,
+  validateWalletAction,
+} from "@/lib/actions/form-actions";
 import { useActionState } from "react";
 import FormButtons from "./FormButtons";
 
@@ -36,7 +38,7 @@ export default function EditPortfolioForm({
   const [walletError, setWalletError] = useState("");
   const [isValidatingWallet, setIsValidatingWallet] = useState(false);
 
-  const MAX_WALLETS_PER_PORTFOLIO = 20;
+  const MAX_WALLETS_PER_PORTFOLIO = 10;
 
   async function handleAddWallet() {
     if (!inputWallet.trim()) return;
@@ -53,7 +55,7 @@ export default function EditPortfolioForm({
     }
 
     try {
-      const result = await validateWalletAddress(inputWallet, wallets);
+      const result = await validateWalletAction(inputWallet, wallets);
 
       if (!result.success) {
         setWalletError(result.error);

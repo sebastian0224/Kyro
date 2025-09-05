@@ -7,7 +7,7 @@ export default async function CreateForm() {
       title="Create Portfolio"
       description="Set up a new portfolio to manage your investments"
     >
-      {/* <CreatePortfolioForm /> */}
+      <CreatePortfolioForm />
     </ModalPortfolio>
   );
 }
