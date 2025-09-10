@@ -28,6 +28,9 @@ export default function PortfolioHeaderCard({ portfolioId, userId }) {
 
   const formatValue = (value) => {
     if (!value) return "$0";
+    if (value >= 1000000) {
+      return `$${(value / 1000000).toFixed(1)}M`;
+    }
     if (value >= 1000) {
       return `$${(value / 1000).toFixed(1)}K`;
     }
@@ -36,7 +39,7 @@ export default function PortfolioHeaderCard({ portfolioId, userId }) {
 
   if (loading) {
     return (
-      <div className="p-6 border-b border-kyro-border">
+      <div className="p-4 sm:p-6 border-b border-kyro-border">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 flex items-center justify-center">
             <Image
@@ -48,9 +51,9 @@ export default function PortfolioHeaderCard({ portfolioId, userId }) {
               priority
             />
           </div>
-          <div className="flex-1">
-            <div className="h-4 bg-gray-700 rounded animate-pulse mb-2 w-24"></div>
-            <div className="h-5 bg-gray-700 rounded animate-pulse w-32"></div>
+          <div className="flex-1 min-w-0">
+            <div className="h-4 bg-gray-700/50 rounded animate-pulse mb-2 w-20 sm:w-24"></div>
+            <div className="h-5 bg-gray-700/50 rounded animate-pulse w-24 sm:w-32"></div>
           </div>
         </div>
       </div>
@@ -58,10 +61,10 @@ export default function PortfolioHeaderCard({ portfolioId, userId }) {
   }
 
   return (
-    <div className="p-6 border-b border-kyro-border">
+    <div className="p-4 sm:p-6 border-b border-kyro-border">
       <div className="flex items-center space-x-3">
         {/* Logo */}
-        <div className="w-10 h-10 flex items-center justify-center">
+        <div className="w-10 h-10 flex items-center justify-center flex-shrink-0">
           <Image
             src="/logo.png"
             alt="Kyro Logo"
@@ -74,10 +77,10 @@ export default function PortfolioHeaderCard({ portfolioId, userId }) {
 
         {/* Portfolio info */}
         <div className="flex-1 min-w-0">
-          <div className="text-white text-sm font-medium truncate">
+          <div className="text-white text-sm font-medium truncate mb-1">
             {data?.name || "Sin nombre"}
           </div>
-          <div className="text-lg font-bold text-white">
+          <div className="text-lg sm:text-xl font-bold text-white">
             {formatValue(data?.netWorth)}
           </div>
         </div>

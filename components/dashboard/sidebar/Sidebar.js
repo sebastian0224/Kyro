@@ -1,7 +1,9 @@
 "use client";
+
 import { usePathname } from "next/navigation";
-import { BarChart3, Briefcase, CreditCard, Home, X } from "lucide-react";
+import { BarChart3, Briefcase, CreditCard, Home, X, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 
 import SidebarContent from "./SidebarContent";
 
@@ -12,6 +14,7 @@ export default function Sidebar({
   userId,
 }) {
   const pathname = usePathname();
+
   const menuItems = [
     {
       name: "Overview",
@@ -34,40 +37,79 @@ export default function Sidebar({
       icon: CreditCard,
     },
   ];
+
   const handleLinkClick = () => {
-    // Close sidebar on mobile when clicking a link
+    // Close sidebar on mobile/tablet when clicking a link
     if (window.innerWidth < 1024) {
       setSidebarOpen(false);
     }
   };
+
+  // Close sidebar when clicking outside on mobile
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setSidebarOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [setSidebarOpen]);
+
+  // Prevent body scroll when mobile sidebar is open
+  useEffect(() => {
+    if (sidebarOpen && window.innerWidth < 1024) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [sidebarOpen]);
+
   return (
     <>
-      {/* Desktop Sidebar */}
-      <div className="hidden lg:flex fixed left-0 top-0 h-full w-64 bg-kyro-sidebar border-r border-kyro-border flex-col z-30">
+      {/* Mobile Menu Button - Fixed position */}
+      <Button
+        className="fixed top-4 left-4 z-50 lg:hidden bg-kyro-sidebar border border-kyro-border text-gray-300 hover:text-white hover:bg-gray-800 shadow-lg"
+        size="sm"
+        onClick={() => setSidebarOpen(true)}
+        aria-label="Open menu"
+      >
+        <Menu className="w-5 h-5" />
+      </Button>
+
+      {/* Desktop Sidebar - Fixed position */}
+      <aside className="hidden lg:flex fixed left-0 top-0 h-full w-64 bg-kyro-sidebar border-r border-kyro-border z-30 flex-col">
         <SidebarContent
           menuItems={menuItems}
           pathname={pathname}
           onLinkClick={handleLinkClick}
           portfolioId={portfolioId}
           userId={userId}
+          isMobile={false}
         />
-      </div>
+      </aside>
 
-      {/* Mobile Sidebar */}
-      <div
-        className={`lg:hidden fixed left-0 top-0 h-full w-64 bg-kyro-sidebar border-r border-kyro-border flex flex-col z-50 transform transition-transform duration-300 ease-in-out ${
+      {/* Mobile Sidebar - Slide in from left */}
+      <aside
+        className={`lg:hidden fixed left-0 top-0 h-full w-64 sm:w-72 bg-kyro-sidebar border-r border-kyro-border z-50 flex flex-col transform transition-transform duration-300 ease-in-out ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        {/* Close Button */}
-        <div className="flex justify-end p-4">
+        {/* Mobile Header with Close Button */}
+        <div className="flex justify-between items-center p-4 border-b border-kyro-border">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setSidebarOpen(false)}
-            className="text-gray-400 hover:text-white hover:bg-gray-800"
+            className="text-gray-400 hover:text-white hover:bg-gray-800 p-1 h-8 w-8"
+            aria-label="Close menu"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </Button>
         </div>
 
@@ -75,11 +117,20 @@ export default function Sidebar({
           menuItems={menuItems}
           pathname={pathname}
           onLinkClick={handleLinkClick}
-          isMobile={true}
           portfolioId={portfolioId}
           userId={userId}
+          isMobile={true}
         />
-      </div>
+      </aside>
+
+      {/* Mobile Backdrop */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-60 z-40 lg:hidden backdrop-blur-sm transition-opacity duration-300"
+          onClick={() => setSidebarOpen(false)}
+          aria-hidden="true"
+        />
+      )}
     </>
   );
 }

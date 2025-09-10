@@ -1,15 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "./sidebar/Sidebar";
 
 export default function DashboardLayout({ children, portfolioId, userId }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // Close sidebar when route changes (for mobile)
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [portfolioId]);
+
   return (
     <div className="min-h-screen bg-kyro-bg text-kyro-text font-inter">
-      <div className="flex">
-        {/* Sidebar */}
+      <div className="flex min-h-screen">
+        {/* Sidebar Component */}
         <Sidebar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
@@ -17,21 +22,14 @@ export default function DashboardLayout({ children, portfolioId, userId }) {
           userId={userId}
         />
 
-        {/* Main Content */}
-        <div className="flex-1 flex flex-col min-h-screen lg:ml-64">
-          <main className="flex-1 p-4 lg:p-6">
-            <div className="max-w-7xl mx-auto">{children}</div>
-          </main>
-        </div>
+        {/* Main Content Area */}
+        <main className="flex-1 flex flex-col min-h-screen lg:ml-64">
+          {/* Content Container with proper spacing */}
+          <div className="flex-1 p-4 pt-16 lg:pt-4 lg:p-6">
+            <div className="max-w-7xl mx-auto w-full">{children}</div>
+          </div>
+        </main>
       </div>
-
-      {/* Mobile Overlay */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
     </div>
   );
 }
