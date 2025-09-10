@@ -3,7 +3,6 @@ import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import { getPortfolioById } from "@/lib/db/portfolios";
-import { readWallets } from "@/lib/db/wallets";
 
 export default async function Layout({ children, params }) {
   const { portfolioId } = await params;
@@ -19,9 +18,8 @@ export default async function Layout({ children, params }) {
     redirect("/portfolios?error=not-authorized");
   }
 
-  const wallets = await readWallets(portfolioId);
   return (
-    <DashboardLayout portfolioId={portfolioId} wallets={wallets}>
+    <DashboardLayout portfolioId={portfolioId} userId={userId}>
       {children}
     </DashboardLayout>
   );

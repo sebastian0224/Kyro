@@ -1,5 +1,4 @@
 "use client";
-
 import { usePathname } from "next/navigation";
 import { BarChart3, Briefcase, CreditCard, Home, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,7 +9,7 @@ export default function Sidebar({
   sidebarOpen,
   setSidebarOpen,
   portfolioId,
-  wallets,
+  userId,
 }) {
   const pathname = usePathname();
   const menuItems = [
@@ -49,7 +48,8 @@ export default function Sidebar({
           menuItems={menuItems}
           pathname={pathname}
           onLinkClick={handleLinkClick}
-          wallets={wallets}
+          portfolioId={portfolioId}
+          userId={userId}
         />
       </div>
 
@@ -76,7 +76,8 @@ export default function Sidebar({
           pathname={pathname}
           onLinkClick={handleLinkClick}
           isMobile={true}
-          wallets={wallets}
+          portfolioId={portfolioId}
+          userId={userId}
         />
       </div>
     </>

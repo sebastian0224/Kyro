@@ -1,40 +1,25 @@
 import { UserButton } from "@clerk/nextjs";
-
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-
 import Link from "next/link";
-import { Briefcase } from "lucide-react";
-import LogoSection from "./LogoSection";
-import PortfolioValueCard from "./PortfolioValueCard";
+
+import PortfolioHeaderCard from "./PortfolioHeaderCard";
+import PortfolioSelectorSection from "./PortfolioSelectorSection";
 
 export default function SidebarContent({
   menuItems,
   pathname,
   onLinkClick,
-  isMobile = false,
-  wallets,
+  portfolioId,
+  userId,
 }) {
   return (
     <>
-      {/* Logo Section */}
-      {/* <LogoSection isMobile={isMobile} /> */}
-      <div>
-        {/* <PortfolioValueCard portfolioName="My Portfolio 1" wallets={wallets} /> */}
-      </div>
+      <PortfolioHeaderCard portfolioId={portfolioId} userId={userId} />
 
-      {/* Manage Portfolio Button */}
-      <div className="p-4">
-        <Link href="/portfolios">
-          <Button
-            className="w-full bg-kyro-blue hover:bg-kyro-blue-hover text-white font-space-grotesk font-medium transition-colors"
-            size="sm"
-          >
-            <Briefcase />
-            Manage Portfolios
-          </Button>
-        </Link>
-      </div>
+      <PortfolioSelectorSection
+        userId={userId}
+        currentPortfolioId={portfolioId}
+      />
 
       <Separator className="bg-kyro-border" />
 
