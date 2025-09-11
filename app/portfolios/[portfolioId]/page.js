@@ -2,7 +2,11 @@ import NetWorthCard from "@/components/dashboard/overview/NetWorthCard";
 import TokenDistributionChart from "@/components/dashboard/overview/TokenDistributionChart";
 import TopTokensTable from "@/components/dashboard/overview/TopTokensTable";
 
-export default function OverviewPage() {
+import { auth } from "@clerk/nextjs/server";
+
+export default async function OverviewPage({ params }) {
+  const { portfolioId } = await params;
+  const { userId } = await auth();
   return (
     <div className="space-y-6 p-6">
       <div>
@@ -14,7 +18,7 @@ export default function OverviewPage() {
 
       {/* Top section - NetWorth and Token Distribution */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <NetWorthCard />
+        <NetWorthCard portfolioId={portfolioId} userId={userId} />
         <TokenDistributionChart />
       </div>
 

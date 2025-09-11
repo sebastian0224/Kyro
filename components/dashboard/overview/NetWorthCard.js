@@ -1,32 +1,39 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { getPortfolioNetWorthData } from "@/lib/alchemy/portfolio";
 
-export default function NetWorthCard() {
-  // TODO: Replace mockData with real portfolio data
-  const mockData = {
-    totalNetWorth: 125420.5,
-    walletContributions: [
-      {
-        name: "Main Wallet",
-        percentage: 65,
-        value: 81523.33,
-        color: "bg-teal-500",
-      },
-      {
-        name: "Trading Wallet",
-        percentage: 25,
-        value: 31355.13,
-        color: "bg-blue-500",
-      },
-      {
-        name: "DeFi Wallet",
-        percentage: 10,
-        value: 12542.05,
-        color: "bg-amber-500",
-      },
-    ],
-  };
+export default function NetWorthCard({ portfolioId, userId }) {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await getPortfolioNetWorthData(portfolioId, userId);
+        setData(result);
+      } catch (err) {
+        console.error("Error loading portfolio net worth:", err);
+      }
+    };
+    if (portfolioId && userId) fetchData();
+  }, [portfolioId, userId]);
+
+  if (!data) {
+    return (
+      <Card className="bg-card border-border">
+        <CardHeader>
+          <CardTitle className="text-xl font-bold text-foreground">
+            Net Worth
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-muted-foreground">Loading...</p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="bg-card border-border">
@@ -41,7 +48,7 @@ export default function NetWorthCard() {
         <div className="text-center">
           <div className="text-3xl font-bold text-foreground">
             $
-            {mockData.totalNetWorth.toLocaleString("en-US", {
+            {data.totalNetWorth.toLocaleString("en-US", {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}
@@ -57,28 +64,32 @@ export default function NetWorthCard() {
 
           {/* Segmented Bar */}
           <div className="flex h-4 w-full overflow-hidden rounded-full border border-gray-700">
-            {mockData.walletContributions.map((wallet, i) => (
+            {data.walletContributions.map((wallet, i) => (
               <div
                 key={i}
-                className={`${wallet.color} h-full`}
-                style={{ width: `${wallet.percentage}%` }}
+                className="h-full"
+                style={{
+                  width: `${wallet.percentage}%`,
+                  backgroundColor: wallet.color, // hex → ej: "#14b8a6"
+                }}
               />
             ))}
           </div>
 
           {/* Legend */}
-          <div className="flex flex-wrap gap-4 text-xs mt-2">
-            {mockData.walletContributions.map((wallet, i) => (
-              <div
+          <div className="flex flex-wrap gap-2 text-xs mt-2">
+            {data.walletContributions.map((wallet, i) => (
+              <Badge
                 key={i}
-                className="flex items-center space-x-1 text-muted-foreground"
+                variant="outline"
+                className="flex items-center gap-1"
               >
-                <span className={`w-3 h-3 rounded-full ${wallet.color}`} />
-                <span>{wallet.name}</span>
-                <span className="text-foreground font-medium">
-                  {wallet.percentage}%
-                </span>
-              </div>
+                <span
+                  className="w-2 h-2 rounded-full"
+                  style={{ backgroundColor: wallet.color }} // ✅ ahora inline style
+                />
+                {wallet.display} ({wallet.percentage.toFixed(2)}%)
+              </Badge>
             ))}
           </div>
         </div>
