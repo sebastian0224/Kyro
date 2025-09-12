@@ -19,12 +19,12 @@ export default async function OverviewPage({ params }) {
       {/* Top section - NetWorth and Token Distribution */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <NetWorthCard portfolioId={portfolioId} userId={userId} />
-        <TokenDistributionChart />
+        <TokenDistributionChart portfolioId={portfolioId} />
       </div>
 
       {/* Bottom section - Top Tokens Table */}
       <div className="w-full">
-        <TopTokensTable />
+        <TopTokensTable portfolioId={portfolioId} />
       </div>
     </div>
   );

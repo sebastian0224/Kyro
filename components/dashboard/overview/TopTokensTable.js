@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
   Table,
@@ -10,41 +11,80 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { getTopTokens } from "@/lib/alchemy/tokens";
 
-export default function TopTokensTable() {
-  // TODO: Replace mockTokens with real data from your portfolio API
-  const mockTokens = [
-    {
-      id: 1,
-      symbol: "BTC",
-      name: "Bitcoin",
-      logo: "/bitcoin-logo.png",
-      amount: 2.5432,
-      price: 43250.0,
-      value: 109987.5,
-      percentage: 45.2,
-    },
-    {
-      id: 2,
-      symbol: "ETH",
-      name: "Ethereum",
-      logo: "/ethereum-logo.png",
-      amount: 15.8934,
-      price: 2850.75,
-      value: 45321.89,
-      percentage: 18.6,
-    },
-    {
-      id: 3,
-      symbol: "SOL",
-      name: "Solana",
-      logo: "/solana-logo.png",
-      amount: 245.67,
-      price: 98.45,
-      value: 24186.32,
-      percentage: 9.9,
-    },
-  ];
+export default function TopTokensTable({ portfolioId }) {
+  const [tokens, setTokens] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchTokens() {
+      if (!portfolioId) return;
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        const tokensData = await getTopTokens(portfolioId);
+        setTokens(tokensData);
+      } catch (err) {
+        setError("Failed to load tokens data");
+        console.error("Error loading tokens:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchTokens();
+  }, [portfolioId]);
+
+  if (loading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Top Tokens</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-center p-8">
+            <div className="text-muted-foreground">Cargando tokens...</div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Top Tokens</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-center p-8">
+            <div className="text-destructive">{error}</div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (tokens.length === 0) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Top Tokens</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-center p-8">
+            <div className="text-muted-foreground">
+              No se encontraron tokens en este portfolio
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card>
@@ -63,17 +103,11 @@ export default function TopTokensTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {mockTokens.map((token) => (
-              <TableRow key={token.id}>
+            {tokens.map((token, index) => (
+              <TableRow key={`${token.symbol}-${index}`}>
                 <TableCell>
                   <div className="flex items-center gap-2">
-                    <img
-                      src={token.logo || "/placeholder.svg"}
-                      alt={token.name}
-                      className="w-6 h-6 rounded-full"
-                    />
                     <div>
-                      <div className="font-medium">{token.name}</div>
                       <div className="text-xs text-muted-foreground">
                         {token.symbol}
                       </div>
