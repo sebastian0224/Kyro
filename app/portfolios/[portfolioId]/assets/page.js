@@ -1,4 +1,8 @@
-export default function AssetsPage() {
+import AssetsClient from "@/components/dashboard/assets/AssetsClient";
+
+export default async function AssetsPage({ params }) {
+  const { portfolioId } = await params;
+
   return (
     <div className="space-y-6">
       <div>
@@ -8,22 +12,7 @@ export default function AssetsPage() {
         <p className="text-gray-400 font-inter">Manage all your assets</p>
       </div>
 
-      {/* Content structure - ready for future components */}
-      <div className="bg-kyro-sidebar border border-kyro-border rounded-lg">
-        <div className="p-6 border-b border-kyro-border">
-          <h3 className="font-space-grotesk font-semibold text-kyro-text">
-            Asset Portfolio
-          </h3>
-          <p className="text-gray-400 font-inter text-sm mt-1">
-            Overview of all your assets and holdings
-          </p>
-        </div>
-        <div className="p-6">
-          <p className="text-gray-400 font-inter text-sm">
-            Asset management interface will be implemented here
-          </p>
-        </div>
-      </div>
+      <AssetsClient portfolioId={portfolioId} />
     </div>
   );
 }

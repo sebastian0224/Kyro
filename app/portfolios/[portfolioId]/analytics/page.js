@@ -1,33 +1,43 @@
-export default function AnalyticsPage() {
+import ChainAllocationChart from "@/components/dashboard/analytics/ChainAllocationChart";
+import HistoricalPerformanceChart from "@/components/dashboard/analytics/HistoricalPerformanceChart";
+import TokenAllocationChart from "@/components/dashboard/analytics/TokenAllocationChart";
+import WalletContributionChart from "@/components/dashboard/analytics/WalletContributionChart";
+
+import { auth } from "@clerk/nextjs/server";
+
+export default async function AnalyticsPage({ params }) {
+  const { portfolioId } = await params;
+  const { userId } = await auth();
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
+      {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-space-grotesk font-bold text-kyro-text mb-2">
-          Analytics
-        </h1>
-        <p className="text-gray-400 font-inter">
-          Detailed analysis of your portfolios
+        <h1 className="text-3xl font-bold tracking-tight">Analytics</h1>
+        <p className="text-muted-foreground">
+          Análisis detallado de tu portafolio de criptomonedas
         </p>
       </div>
 
-      {/* Content structure - ready for future components */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-kyro-sidebar border border-kyro-border rounded-lg p-6">
-          <h3 className="font-space-grotesk font-semibold text-kyro-text mb-2">
-            Performance Charts
-          </h3>
-          <p className="text-gray-400 font-inter text-sm">
-            Visual representation of portfolio performance
-          </p>
+      {/* Charts Grid Layout */}
+      <div className="space-y-6">
+        {/* Top Row - Historical Performance (Full Width) */}
+        <div className="w-full">
+          <HistoricalPerformanceChart
+            portfolioId={portfolioId}
+            userId={userId}
+          />
         </div>
 
-        <div className="bg-kyro-sidebar border border-kyro-border rounded-lg p-6">
-          <h3 className="font-space-grotesk font-semibold text-kyro-text mb-2">
-            Risk Analysis
-          </h3>
-          <p className="text-gray-400 font-inter text-sm">
-            Risk assessment and recommendations
-          </p>
+        {/* Middle Row - Token & Chain Allocation (2 columns on large screens) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <TokenAllocationChart portfolioId={portfolioId} />
+          <ChainAllocationChart portfolioId={portfolioId} />
+        </div>
+
+        {/* Bottom Row - Wallet Contribution (Full Width) */}
+        <div className="w-full">
+          <WalletContributionChart portfolioId={portfolioId} />
         </div>
       </div>
     </div>
