@@ -12,7 +12,7 @@ export default function DashboardLayout({ children, portfolioId, userId }) {
   }, [portfolioId]);
 
   return (
-    <div className="min-h-screen bg-kyro-bg text-kyro-text font-inter">
+    <div className="min-h-screen text-kyro-text font-inter">
       <div className="flex min-h-screen">
         {/* Sidebar Component */}
         <Sidebar

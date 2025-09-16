@@ -1,16 +1,17 @@
 import NetWorthCard from "@/components/dashboard/overview/NetWorthCard";
 import TokenDistributionChart from "@/components/dashboard/overview/TokenDistributionChart";
 import TopTokensTable from "@/components/dashboard/overview/TopTokensTable";
-
 import { auth } from "@clerk/nextjs/server";
 
 export default async function OverviewPage({ params }) {
   const { portfolioId } = await params;
   const { userId } = await auth();
+
   return (
     <div className="space-y-6 p-6">
+      {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Overview</h1>
+        <h1 className="text-3xl font-bold mb-2">Overview</h1>
         <p className="text-muted-foreground">Welcome to your KYRO dashboard</p>
       </div>
 

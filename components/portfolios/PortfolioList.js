@@ -1,6 +1,3 @@
-// PortfolioList.js
-// This component displays the list of portfolios for the current user.
-
 import { readPortfolios } from "@/lib/db/portfolios";
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
@@ -15,28 +12,31 @@ export default async function PortfolioList() {
 
   if (portfolios.length === 0) {
     return (
-      <div className="text-center py-16">
+      <div className="text-center py-16 px-4">
         <div
-          className="mx-auto w-24 h-24 rounded-full flex items-center justify-center mb-6"
+          className="mx-auto w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center mb-6"
           style={{ backgroundColor: "var(--accent)", opacity: 0.1 }}
         >
-          <FolderOpen className="h-12 w-12" />
+          <FolderOpen className="h-10 w-10 md:h-12 md:w-12" />
         </div>
-        <h3 className="font-space-grotesk text-xl font-semibold mb-2 text-white">
-          You dont have any portfolios yet
+        <h3 className="font-space-grotesk text-lg md:text-xl font-semibold mb-2 text-white">
+          You don’t have any portfolios yet
         </h3>
-        <p className="font-inter mb-6 text-gray-400">
+        <p className="font-inter mb-6 text-gray-400 text-sm md:text-base">
           Create your first portfolio to start managing your investments
         </p>
         <Button
           asChild
-          className="font-inter font-medium"
+          className="font-inter font-medium w-full sm:w-auto"
           style={{
             backgroundColor: "var(--accent)",
             color: "white",
           }}
         >
-          <Link href="/portfolios/create" className="flex items-center gap-2">
+          <Link
+            href="/portfolios/create"
+            className="flex items-center gap-2 justify-center"
+          >
             <Plus className="h-4 w-4" />
             Create Portfolio
           </Link>
@@ -46,10 +46,10 @@ export default async function PortfolioList() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="max-w-4xl mx-auto space-y-6 px-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-2">
-          <h2 className="font-space-grotesk text-2xl font-semibold text-white">
+          <h2 className="font-space-grotesk text-xl md:text-2xl font-semibold text-white">
             My Portfolios
           </h2>
           <Badge
@@ -72,24 +72,24 @@ export default async function PortfolioList() {
             key={portfolio.id}
             className="group hover:shadow-lg transition-all duration-200 border bg-gray-900 border-gray-700"
           >
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between">
+            <CardContent className="p-4 md:p-6">
+              <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                 {/* Portfolio Information */}
                 <div className="flex-1 space-y-3">
                   <div className="flex items-start gap-4">
                     <div
-                      className="p-3 rounded-lg"
+                      className="p-3 rounded-lg flex-shrink-0"
                       style={{ backgroundColor: "var(--accent)", opacity: 0.1 }}
                     >
                       <Wallet className="h-6 w-6" />
                     </div>
                     <div className="flex-1">
-                      <CardTitle className="font-space-grotesk text-xl text-white mb-2">
+                      <CardTitle className="font-space-grotesk text-lg md:text-xl text-white mb-2">
                         {portfolio.name}
                       </CardTitle>
-                      <div className="flex items-center gap-2 mb-3">
+                      <div className="flex items-center gap-2 mb-3 text-sm">
                         <Wallet className="h-4 w-4 text-gray-400" />
-                        <span className="font-inter text-sm text-gray-400">
+                        <span className="font-inter text-gray-400">
                           {portfolio.wallets?.length || 0} connected wallets
                         </span>
                       </div>
@@ -123,15 +123,15 @@ export default async function PortfolioList() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex items-center gap-2 ml-4">
+                <div className="flex flex-wrap md:flex-nowrap items-center gap-2">
                   <Button
                     asChild
                     size="sm"
-                    className="font-inter bg-blue-600 hover:bg-blue-700 text-white border-0"
+                    className="font-inter bg-blue-600 hover:bg-blue-700 text-white border-0 w-full sm:w-auto"
                   >
                     <Link
                       href={`/portfolios/${portfolio.id}`}
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-2 justify-center"
                     >
                       <Eye className="h-4 w-4" />
                       View
@@ -141,13 +141,14 @@ export default async function PortfolioList() {
                   <Button
                     asChild
                     size="sm"
-                    className="font-inter bg-gray-700 hover:bg-gray-600 text-white border-0"
+                    className="font-inter bg-gray-700 hover:bg-gray-600 text-white border-0 w-full sm:w-auto"
                   >
                     <Link
                       href={`/portfolios/edit/${portfolio.id}`}
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-2 justify-center"
                     >
                       <Edit3 className="h-4 w-4" />
+                      Edit
                     </Link>
                   </Button>
 
@@ -155,14 +156,15 @@ export default async function PortfolioList() {
                     asChild
                     variant="outline"
                     size="sm"
-                    className="font-inter text-red-400 hover:text-red-300 bg-transparent"
+                    className="font-inter text-red-400 hover:text-red-300 bg-transparent w-full sm:w-auto"
                     style={{ borderColor: "var(--border)" }}
                   >
                     <Link
                       href={`/portfolios/delete/${portfolio.id}`}
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-2 justify-center"
                     >
                       <Trash2 className="h-4 w-4" />
+                      Delete
                     </Link>
                   </Button>
                 </div>
