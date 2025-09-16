@@ -11,9 +11,7 @@ export default async function OverviewPage({ params }) {
     <div className="space-y-6 p-6">
       <div>
         <h1 className="text-3xl font-bold text-foreground mb-2">Overview</h1>
-        <p className="text-muted-foreground">
-          Bienvenido a tu dashboard de KYRO
-        </p>
+        <p className="text-muted-foreground">Welcome to your KYRO dashboard</p>
       </div>
 
       {/* Top section - NetWorth and Token Distribution */}

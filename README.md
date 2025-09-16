@@ -1,36 +1,194 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🚀 Kyro - Multi-Chain Portfolio Tracker
 
-## Getting Started
+A modern, full-stack web application for tracking cryptocurrency portfolios across multiple blockchain networks. Built with Next.js 14, Kyro provides real-time portfolio analytics, transaction history, and comprehensive asset management.
 
-First, run the development server:
+![Kyro Dashboard](https://via.placeholder.com/800x400/1a1a1a/ffffff?text=Kyro+Dashboard)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 📊 **Portfolio Management**
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- Create and manage multiple crypto portfolios
+- Add multiple wallet addresses per portfolio
+- Real-time portfolio valuation and performance tracking
+- Historical performance analytics (3-month charts)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 🔗 **Multi-Chain Support**
 
-## Learn More
+- **Ethereum Mainnet** - Native ETH and ERC-20 tokens
+- **Polygon** - MATIC and Polygon-based assets
+- **Arbitrum** - Layer 2 scaling solution
+- **Optimism** - Optimistic rollup network
+- **Base** - Coinbase's L2 network
+- **Binance Smart Chain** - BNB and BEP-20 tokens
 
-To learn more about Next.js, take a look at the following resources:
+### 💰 **Asset Analytics**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Comprehensive token distribution analysis
+- Network-based portfolio allocation
+- Top 20 assets by value with percentage breakdown
+- Real-time price tracking and portfolio percentages
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 📋 **Transaction History**
 
-## Deploy on Vercel
+- Complete transaction history across all networks
+- Support for external, internal, and token transfers (ERC-20, ERC-721, ERC-1155)
+- Advanced filtering by wallet, network, and transaction type
+- Direct links to blockchain explorers
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 🎨 **Modern UI/UX**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Clean, professional interface with dark theme
+- Responsive design for desktop and mobile
+- Interactive charts and data visualizations
+- Intuitive navigation and user experience
+
+## 🛠️ Tech Stack
+
+### **Frontend**
+
+- **Next.js 14** - React framework with App Router
+- **React** - Component-based UI library
+- **Tailwind CSS** - Utility-first CSS framework
+- **Recharts** - Data visualization library
+- **Lucide React** - Icon library
+
+### **Backend**
+
+- **Next.js API Routes** - Server-side functionality
+- **Prisma ORM** - Database management and modeling
+- **PostgreSQL** - Relational database
+- **NextAuth.js** - Authentication system
+
+### **External APIs**
+
+- **Alchemy API** - Blockchain data and asset information
+- **Real-time price feeds** and historical data
+- **Multi-chain transaction data**
+
+### **Development**
+
+- **TypeScript** - Type-safe JavaScript
+- **ESLint** - Code linting and formatting
+- **Git** - Version control
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- PostgreSQL database
+- Alchemy API key
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/yourusername/kyro-portfolio-tracker.git
+   cd kyro-portfolio-tracker
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Environment Setup**
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
+   Configure your environment variables:
+
+   ```env
+   DATABASE_URL="postgresql://username:password@localhost:5432/kyro"
+   NEXTAUTH_SECRET="your-nextauth-secret"
+   NEXTAUTH_URL="http://localhost:3000"
+   ALCHEMY_API_KEY="your-alchemy-api-key"
+   ```
+
+4. **Database Setup**
+
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
+
+5. **Run Development Server**
+
+   ```bash
+   npm run dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 📱 Core Functionality
+
+### Portfolio Dashboard
+
+- Overview of all portfolios with net worth
+- Quick portfolio switching and management
+- Real-time performance metrics
+
+### Asset Management
+
+- Detailed breakdown of all holdings
+- Token distribution charts
+- Network allocation analysis
+- Price tracking with percentage changes
+
+### Transaction Monitoring
+
+- Complete transaction history
+- Filter by wallet, network, or transaction type
+- Sent/received indicators with amounts
+- Direct blockchain explorer integration
+
+### Wallet Integration
+
+- Add multiple wallet addresses
+- Automatic validation and verification
+- Support for all major wallet formats
+- Real-time balance updates
+
+## 🔒 Security & Privacy
+
+- Wallet addresses are read-only (view-only access)
+- No private key storage or handling
+- Secure authentication with NextAuth.js
+- Data encryption and secure API communication
+
+## 🎯 Use Cases
+
+- **Individual Investors** - Track personal crypto holdings
+- **Portfolio Managers** - Manage multiple client portfolios
+- **DeFi Users** - Monitor assets across multiple protocols
+- **Traders** - Analyze performance and allocation
+
+## 🔄 Future Enhancements
+
+- [ ] DeFi protocol integration (staking, lending)
+- [ ] Mobile app development
+- [ ] Advanced analytics and insights
+- [ ] Portfolio sharing and social features
+- [ ] Automated reporting and alerts
+- [ ] Additional blockchain networks
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👨‍💻 Developer
+
+Built by Sebastian Osorio as a showcase of modern full-stack development capabilities.
+
+- **Portfolio**: [yourportfolio.com]
+- **LinkedIn**: [linkedin.com/in/yourprofile]
+- **GitHub**: [github.com/yourusername]
+
+---
+
+**Kyro** - _Professional crypto portfolio management, simplified._

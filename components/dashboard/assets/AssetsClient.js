@@ -1,10 +1,31 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Calendar } from "lucide-react";
 import { getPortfolioAssets } from "@/lib/alchemy/tokens";
 import DropDown from "./Dropdown";
 
-// Función para formatear números grandes
+// 🔹 Reusable loading spinner (igual que en HistoricalPerformanceChart)
+function LoadingSpinner() {
+  return (
+    <div className="flex items-center justify-center h-32">
+      <div className="flex flex-col items-center space-y-4">
+        <div className="relative">
+          <div className="w-10 h-10 border-4 border-muted rounded-full"></div>
+          <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
+        </div>
+        <div className="text-center space-y-1">
+          <p className="text-sm font-medium">Loading asset data...</p>
+          <p className="text-xs text-muted-foreground">
+            Fetching tokens and balances
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// 🔹 Number formatter
 const formatNumber = (num) => {
   if (num >= 1000000) {
     return (num / 1000000).toFixed(2) + "M";
@@ -15,7 +36,7 @@ const formatNumber = (num) => {
   return num.toFixed(2);
 };
 
-// Función para formatear valores USD
+// 🔹 USD formatter
 const formatUSD = (value) => {
   return `$${formatNumber(value)}`;
 };
@@ -28,13 +49,13 @@ export default function AssetsClient({ portfolioId }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Filtros
+  // Filters
   const [selectedWallet, setSelectedWallet] = useState("all");
   const [selectedNetwork, setSelectedNetwork] = useState("all");
 
-  // Cargar datos
+  // Load assets
   useEffect(() => {
-    const loadAssets = async () => {
+    async function loadAssets() {
       try {
         setLoading(true);
         setError(null);
@@ -50,19 +71,20 @@ export default function AssetsClient({ portfolioId }) {
         setAvailableWallets(result.availableWallets);
         setAvailableNetworks(result.availableNetworks);
       } catch (err) {
-        setError("Error loading assets");
         console.error("Error loading assets:", err);
+        setError("Failed to load assets");
+        setAssets([]);
       } finally {
         setLoading(false);
       }
-    };
+    }
 
     if (portfolioId) {
       loadAssets();
     }
   }, [portfolioId, selectedWallet, selectedNetwork]);
 
-  // Opciones para los dropdowns
+  // Dropdown options
   const walletOptions = [
     { value: "all", display: "All" },
     ...availableWallets.map((wallet) => ({
@@ -75,46 +97,6 @@ export default function AssetsClient({ portfolioId }) {
     { value: "all", display: "All" },
     ...availableNetworks,
   ];
-
-  if (loading) {
-    return (
-      <div className="bg-kyro-sidebar border border-kyro-border rounded-lg">
-        <div className="p-6 border-b border-kyro-border">
-          <h3 className="font-space-grotesk font-semibold text-kyro-text">
-            Asset Portfolio
-          </h3>
-          <p className="text-gray-400 font-inter text-sm mt-1">
-            Loading your assets...
-          </p>
-        </div>
-        <div className="p-6">
-          <div className="flex items-center justify-center h-32">
-            <p className="text-gray-400">Loading assets...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="bg-kyro-sidebar border border-kyro-border rounded-lg">
-        <div className="p-6 border-b border-kyro-border">
-          <h3 className="font-space-grotesk font-semibold text-kyro-text">
-            Asset Portfolio
-          </h3>
-          <p className="text-gray-400 font-inter text-sm mt-1">
-            Error loading assets
-          </p>
-        </div>
-        <div className="p-6">
-          <div className="flex items-center justify-center h-32">
-            <p className="text-red-400">{error}</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="bg-kyro-sidebar border border-kyro-border rounded-lg">
@@ -157,11 +139,27 @@ export default function AssetsClient({ portfolioId }) {
         </div>
       </div>
 
-      {/* Assets Table */}
+      {/* Content */}
       <div className="overflow-x-auto">
-        {assets.length === 0 ? (
-          <div className="p-6 text-center">
-            <p className="text-gray-400 font-inter">No assets found</p>
+        {loading ? (
+          <LoadingSpinner />
+        ) : error ? (
+          <div className="flex items-center justify-center h-32">
+            <p className="text-red-400">{error}</p>
+          </div>
+        ) : assets.length === 0 ? (
+          <div className="flex items-center justify-center h-32">
+            <div className="text-center space-y-3">
+              <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mx-auto">
+                <Calendar className="h-6 w-6 text-muted-foreground" />
+              </div>
+              <div className="space-y-1">
+                <p className="text-sm font-medium">No assets available</p>
+                <p className="text-xs text-muted-foreground">
+                  Try adjusting your filters or connect a wallet
+                </p>
+              </div>
+            </div>
           </div>
         ) : (
           <table className="w-full">

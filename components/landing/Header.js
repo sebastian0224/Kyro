@@ -4,10 +4,13 @@ import { SignInButton, SignUpButton } from "@clerk/nextjs";
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#0F0F10]/95 backdrop-blur-sm border-b border-gray-800">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Logo y nombre */}
-        <a href="#" className="flex items-center space-x-2">
+    <header className="sticky top-0 z-50 w-full bg-neutral-950/95 backdrop-blur-sm border-b border-gray-800">
+      <div className="container mx-auto px-4 h-auto py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        {/* Logo */}
+        <a
+          href="#"
+          className="flex items-center space-x-2 justify-center md:justify-start"
+        >
           <Image
             src="/logo.png"
             alt="Kyro Logo"
@@ -15,45 +18,23 @@ export default function Header() {
             height={32}
             className="w-8 h-8"
           />
-          <span className="text-[#F8FAFC] font-bold text-xl tracking-wider font-space-grotesk uppercase">
+          <span className="text-white font-bold text-xl tracking-wider font-space-grotesk uppercase">
             KYRO
           </span>
         </a>
 
-        {/* Enlaces de navegación - solo visibles en desktop */}
-        <nav className="hidden md:flex items-center space-x-8">
-          <a
-            href="#features"
-            className="text-[#F8FAFC] hover:text-[#3B82F6] transition-colors font-inter"
-          >
-            Features
-          </a>
-          <a
-            href="#how-it-works"
-            className="text-[#F8FAFC] hover:text-[#3B82F6] transition-colors font-inter"
-          >
-            How it works
-          </a>
-          <a
-            href="#pricing"
-            className="text-[#F8FAFC] hover:text-[#3B82F6] transition-colors font-inter"
-          >
-            Pricing
-          </a>
-        </nav>
-
-        {/* Botones de autenticación */}
-        <div className="flex items-center space-x-3">
+        {/* Auth buttons */}
+        <div className="flex items-center justify-center md:justify-end space-x-3">
           <SignInButton mode="modal">
             <Button
               variant="outline"
-              className="bg-[#1F1F1F] text-[#F8FAFC] border-[#1F1F1F] hover:bg-[#2D2D2D] hover:border-[#2D2D2D] font-inter"
+              className="bg-neutral-900 text-white border-neutral-900 hover:bg-neutral-800 hover:border-neutral-800 font-inter"
             >
               Sign In
             </Button>
           </SignInButton>
           <SignUpButton mode="modal">
-            <Button className="bg-[#3B82F6] text-[#F8FAFC] hover:bg-[#2563EB] font-inter">
+            <Button className="bg-blue-500 text-white hover:bg-blue-600 font-inter">
               Get Started
             </Button>
           </SignUpButton>

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { ExternalLink, ArrowUpRight, ArrowDownLeft } from "lucide-react";
 import { getPortfolioTransactions } from "@/lib/alchemy/portfolio";
 import Dropdown from "./DropDown";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 // Función para truncar direcciones
 const truncateAddress = (address) => {
@@ -83,7 +84,7 @@ export default function TransactionsClient({ portfolioId }) {
         setAvailableNetworks(result.availableNetworks);
         setAvailableCategories(result.availableCategories);
       } catch (err) {
-        setError("Error loading transactions");
+        setError("Failed to load transactions");
         console.error("Error loading transactions:", err);
       } finally {
         setLoading(false);
@@ -114,6 +115,7 @@ export default function TransactionsClient({ portfolioId }) {
     ...availableCategories,
   ];
 
+  // Estado de carga
   if (loading) {
     return (
       <div className="bg-kyro-sidebar border border-kyro-border rounded-lg">
@@ -126,14 +128,13 @@ export default function TransactionsClient({ portfolioId }) {
           </p>
         </div>
         <div className="p-6">
-          <div className="flex items-center justify-center h-32">
-            <p className="text-gray-400">Loading transactions...</p>
-          </div>
+          <LoadingSpinner message="Loading transactions..." />
         </div>
       </div>
     );
   }
 
+  // Estado de error
   if (error) {
     return (
       <div className="bg-kyro-sidebar border border-kyro-border rounded-lg">
@@ -141,14 +142,7 @@ export default function TransactionsClient({ portfolioId }) {
           <h3 className="font-space-grotesk font-semibold text-kyro-text">
             Transaction History
           </h3>
-          <p className="text-gray-400 font-inter text-sm mt-1">
-            Error loading transactions
-          </p>
-        </div>
-        <div className="p-6">
-          <div className="flex items-center justify-center h-32">
-            <p className="text-red-400">{error}</p>
-          </div>
+          <p className="text-gray-400 font-inter text-sm mt-1">{error}</p>
         </div>
       </div>
     );

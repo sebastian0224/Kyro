@@ -15,7 +15,7 @@ export default async function AnalyticsPage({ params }) {
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Analytics</h1>
         <p className="text-muted-foreground">
-          Análisis detallado de tu portafolio de criptomonedas
+          Detailed analysis of your cryptocurrency portfolio
         </p>
       </div>
 

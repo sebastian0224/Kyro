@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { getTopTokens } from "@/lib/alchemy/tokens";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import { Calendar } from "lucide-react";
 
 export default function TopTokensTable({ portfolioId }) {
   const [tokens, setTokens] = useState([]);
@@ -39,108 +41,77 @@ export default function TopTokensTable({ portfolioId }) {
     fetchTokens();
   }, [portfolioId]);
 
-  if (loading) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Top Tokens</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-center p-8">
-            <div className="text-muted-foreground">Cargando tokens...</div>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (error) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Top Tokens</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-center p-8">
-            <div className="text-destructive">{error}</div>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (tokens.length === 0) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Top Tokens</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-center p-8">
-            <div className="text-muted-foreground">
-              No se encontraron tokens en este portfolio
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
   return (
     <Card>
       <CardHeader>
         <CardTitle>Top Tokens</CardTitle>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Token</TableHead>
-              <TableHead className="text-right">Amount</TableHead>
-              <TableHead className="text-right">Price</TableHead>
-              <TableHead className="text-right">Value</TableHead>
-              <TableHead className="text-right">% Portfolio</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {tokens.map((token, index) => (
-              <TableRow key={`${token.symbol}-${index}`}>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <div>
-                      <div className="text-xs text-muted-foreground">
-                        {token.symbol}
+        {loading ? (
+          <LoadingSpinner message="Loading tokens data..." />
+        ) : error ? (
+          <div className="flex flex-col items-center justify-center h-[200px] space-y-2">
+            <p className="text-red-500 text-sm font-medium">{error}</p>
+            <p className="text-xs text-muted-foreground">
+              Please try again later.
+            </p>
+          </div>
+        ) : tokens.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-[200px] space-y-2">
+            <Calendar className="h-6 w-6 text-muted-foreground" />
+            <p className="text-sm text-muted-foreground">No tokens available</p>
+          </div>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Token</TableHead>
+                <TableHead className="text-right">Amount</TableHead>
+                <TableHead className="text-right">Price</TableHead>
+                <TableHead className="text-right">Value</TableHead>
+                <TableHead className="text-right">% Portfolio</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {tokens.map((token, index) => (
+                <TableRow key={`${token.symbol}-${index}`}>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <div>
+                        <div className="text-xs text-muted-foreground">
+                          {token.symbol}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </TableCell>
-                <TableCell className="text-right">
-                  {token.amount.toLocaleString("en-US", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 4,
-                  })}
-                </TableCell>
-                <TableCell className="text-right">
-                  $
-                  {token.price.toLocaleString("en-US", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}
-                </TableCell>
-                <TableCell className="text-right font-medium">
-                  $
-                  {token.value.toLocaleString("en-US", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}
-                </TableCell>
-                <TableCell className="text-right">
-                  <Badge variant="secondary">{token.percentage}%</Badge>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {token.amount.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 4,
+                    })}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    $
+                    {token.price.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </TableCell>
+                  <TableCell className="text-right font-medium">
+                    $
+                    {token.value.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Badge variant="secondary">{token.percentage}%</Badge>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </CardContent>
     </Card>
   );
