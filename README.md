@@ -4,7 +4,7 @@ A modern, full-stack web application for tracking cryptocurrency portfolios acro
 
 ![Kyro Dashboard](https://res.cloudinary.com/dijijlcze/image/upload/v1758123013/screencapture-kyro-alpha-vercel-app-portfolios-cmf7ap1bi0001v67ogsofs53w-2025-09-17-10_03_38_-_Editado_-_Editado_xmtcum.png)
 
-## ✨ Features
+## Features
 
 ### 📊 **Portfolio Management**
 
@@ -58,72 +58,13 @@ A modern, full-stack web application for tracking cryptocurrency portfolios acro
 - **Next.js API Routes** - Server-side functionality
 - **Prisma ORM** - Database management and modeling
 - **PostgreSQL** - Relational database
-- **NextAuth.js** - Authentication system
+- **Clerk** - Authentication system
 
 ### **External APIs**
 
 - **Alchemy API** - Blockchain data and asset information
 - **Real-time price feeds** and historical data
 - **Multi-chain transaction data**
-
-### **Development**
-
-- **TypeScript** - Type-safe JavaScript
-- **ESLint** - Code linting and formatting
-- **Git** - Version control
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- PostgreSQL database
-- Alchemy API key
-
-### Installation
-
-1. **Clone the repository**
-
-   ```bash
-   git clone https://github.com/yourusername/kyro-portfolio-tracker.git
-   cd kyro-portfolio-tracker
-   ```
-
-2. **Install dependencies**
-
-   ```bash
-   npm install
-   ```
-
-3. **Environment Setup**
-
-   ```bash
-   cp .env.example .env.local
-   ```
-
-   Configure your environment variables:
-
-   ```env
-   DATABASE_URL="postgresql://username:password@localhost:5432/kyro"
-   NEXTAUTH_SECRET="your-nextauth-secret"
-   NEXTAUTH_URL="http://localhost:3000"
-   ALCHEMY_API_KEY="your-alchemy-api-key"
-   ```
-
-4. **Database Setup**
-
-   ```bash
-   npx prisma generate
-   npx prisma db push
-   ```
-
-5. **Run Development Server**
-
-   ```bash
-   npm run dev
-   ```
-
-   Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 📱 Core Functionality
 
@@ -177,17 +118,13 @@ A modern, full-stack web application for tracking cryptocurrency portfolios acro
 - [ ] Automated reporting and alerts
 - [ ] Additional blockchain networks
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## 👨‍💻 Developer
 
 Built by Sebastian Osorio as a showcase of modern full-stack development capabilities.
 
 - **Portfolio**: [yourportfolio.com]
 - **LinkedIn**: [linkedin.com/in/yourprofile]
-- **GitHub**: [github.com/yourusername]
+- **GitHub**: [https://github.com/sebastian0224]
 
 ---
 
