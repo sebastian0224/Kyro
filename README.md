@@ -2,7 +2,7 @@
 
 A modern, full-stack web application for tracking cryptocurrency portfolios across multiple blockchain networks. Built with Next.js 14, Kyro provides real-time portfolio analytics, transaction history, and comprehensive asset management.
 
-![Kyro Dashboard](https://via.placeholder.com/800x400/1a1a1a/ffffff?text=Kyro+Dashboard)
+![Kyro Dashboard](https://res.cloudinary.com/dijijlcze/image/upload/v1758123013/screencapture-kyro-alpha-vercel-app-portfolios-cmf7ap1bi0001v67ogsofs53w-2025-09-17-10_03_38_-_Editado_-_Editado_xmtcum.png)
 
 ## ✨ Features
 
