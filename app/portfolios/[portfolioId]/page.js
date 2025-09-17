@@ -8,11 +8,13 @@ export default async function OverviewPage({ params }) {
   const { userId } = await auth();
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold mb-2">Overview</h1>
-        <p className="text-muted-foreground">Welcome to your KYRO dashboard</p>
+        <h1 className="text-2xl sm:text-3xl font-bold mb-2">Overview</h1>
+        <p className="text-muted-foreground text-sm sm:text-base">
+          Welcome to your KYRO dashboard
+        </p>
       </div>
 
       {/* Top section - NetWorth and Token Distribution */}

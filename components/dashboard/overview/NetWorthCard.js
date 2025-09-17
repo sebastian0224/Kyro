@@ -34,7 +34,7 @@ export default function NetWorthCard({ portfolioId, userId }) {
   }, [portfolioId, userId]);
 
   return (
-    <Card className="bg-card border-border">
+    <Card className="flex flex-col">
       <CardHeader>
         <CardTitle className="text-xl font-bold text-foreground">
           Net Worth

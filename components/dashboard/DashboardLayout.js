@@ -24,8 +24,8 @@ export default function DashboardLayout({ children, portfolioId, userId }) {
 
         {/* Main Content Area */}
         <main className="flex-1 flex flex-col min-h-screen lg:ml-64">
-          {/* Content Container with proper spacing */}
-          <div className="flex-1 p-4 pt-16 lg:pt-4 lg:p-6">
+          {/* Content Container */}
+          <div className="flex-1 p-4 sm:p-6 pt-16 lg:pt-6">
             <div className="max-w-7xl mx-auto w-full">{children}</div>
           </div>
         </main>

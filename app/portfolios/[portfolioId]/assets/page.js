@@ -5,11 +5,14 @@ export default async function AssetsPage({ params }) {
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div>
-        <h1 className="text-3xl font-space-grotesk font-bold text-kyro-text mb-2">
+        <h1 className="text-2xl sm:text-3xl font-space-grotesk font-bold mb-2">
           Assets
         </h1>
-        <p className="text-gray-400 font-inter">Manage all your assets</p>
+        <p className="text-gray-400 font-inter text-sm sm:text-base">
+          Manage all your assets
+        </p>
       </div>
 
       <AssetsClient portfolioId={portfolioId} />

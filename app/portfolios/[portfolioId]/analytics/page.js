@@ -2,7 +2,6 @@ import ChainAllocationChart from "@/components/dashboard/analytics/ChainAllocati
 import HistoricalPerformanceChart from "@/components/dashboard/analytics/HistoricalPerformanceChart";
 import TokenAllocationChart from "@/components/dashboard/analytics/TokenAllocationChart";
 import WalletContributionChart from "@/components/dashboard/analytics/WalletContributionChart";
-
 import { auth } from "@clerk/nextjs/server";
 
 export default async function AnalyticsPage({ params }) {
@@ -10,18 +9,20 @@ export default async function AnalyticsPage({ params }) {
   const { userId } = await auth();
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Analytics</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">
+          Analytics
+        </h1>
+        <p className="text-muted-foreground text-sm sm:text-base">
           Detailed analysis of your cryptocurrency portfolio
         </p>
       </div>
 
       {/* Charts Grid Layout */}
       <div className="space-y-6">
-        {/* Top Row - Historical Performance (Full Width) */}
+        {/* Top Row - Historical Performance */}
         <div className="w-full">
           <HistoricalPerformanceChart
             portfolioId={portfolioId}
@@ -29,13 +30,13 @@ export default async function AnalyticsPage({ params }) {
           />
         </div>
 
-        {/* Middle Row - Token & Chain Allocation (2 columns on large screens) */}
+        {/* Middle Row - Token & Chain Allocation */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <TokenAllocationChart portfolioId={portfolioId} />
           <ChainAllocationChart portfolioId={portfolioId} />
         </div>
 
-        {/* Bottom Row - Wallet Contribution (Full Width) */}
+        {/* Bottom Row - Wallet Contribution */}
         <div className="w-full">
           <WalletContributionChart portfolioId={portfolioId} />
         </div>

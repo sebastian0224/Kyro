@@ -50,67 +50,71 @@ export default function TopTokensTable({ portfolioId }) {
         {loading ? (
           <LoadingSpinner message="Loading tokens data..." />
         ) : error ? (
-          <div className="flex flex-col items-center justify-center h-[200px] space-y-2">
-            <p className="text-red-500 text-sm font-medium">{error}</p>
-            <p className="text-xs text-muted-foreground">
-              Please try again later.
-            </p>
-          </div>
+          <p className="text-red-500 text-center">{error}</p>
         ) : tokens.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-[200px] space-y-2">
             <Calendar className="h-6 w-6 text-muted-foreground" />
             <p className="text-sm text-muted-foreground">No tokens available</p>
           </div>
         ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Token</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
-                <TableHead className="text-right">Price</TableHead>
-                <TableHead className="text-right">Value</TableHead>
-                <TableHead className="text-right">% Portfolio</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
+          <>
+            {/* Tabla en pantallas grandes */}
+            <div className="hidden lg:block overflow-x-auto">
+              <Table className="min-w-[600px]">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Token</TableHead>
+                    <TableHead className="text-right">Amount</TableHead>
+                    <TableHead className="text-right">Price</TableHead>
+                    <TableHead className="text-right">Value</TableHead>
+                    <TableHead className="text-right">% Portfolio</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {tokens.map((token, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{token.symbol}</TableCell>
+                      <TableCell className="text-right">
+                        {token.amount.toFixed(2)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        ${token.price.toFixed(2)}
+                      </TableCell>
+                      <TableCell className="text-right font-medium">
+                        ${token.value.toFixed(2)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Badge variant="secondary">{token.percentage}%</Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+            {/* Cards en mobile + tablet + portátiles chicos */}
+            <div className="lg:hidden space-y-4">
               {tokens.map((token, index) => (
-                <TableRow key={`${token.symbol}-${index}`}>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <div>
-                        <div className="text-xs text-muted-foreground">
-                          {token.symbol}
-                        </div>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    {token.amount.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 4,
-                    })}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    $
-                    {token.price.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
-                  </TableCell>
-                  <TableCell className="text-right font-medium">
-                    $
-                    {token.value.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Badge variant="secondary">{token.percentage}%</Badge>
-                  </TableCell>
-                </TableRow>
+                <div
+                  key={index}
+                  className="p-4 border rounded-lg bg-card space-y-2"
+                >
+                  <h4 className="font-semibold">{token.symbol}</h4>
+                  <p className="text-sm text-gray-400">
+                    Amount: {token.amount.toFixed(2)}
+                  </p>
+                  <p className="text-sm text-gray-400">
+                    Price: ${token.price.toFixed(2)}
+                  </p>
+                  <p className="text-sm text-gray-400">
+                    Value: ${token.value.toFixed(2)}
+                  </p>
+                  <p className="font-medium">
+                    % Portfolio: {token.percentage}%
+                  </p>
+                </div>
               ))}
-            </TableBody>
-          </Table>
+            </div>
+          </>
         )}
       </CardContent>
     </Card>

@@ -2,11 +2,21 @@
 
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { useClerk } from "@clerk/nextjs";
+import { useClerk, useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 export default function AutoSignInModal() {
   const searchParams = useSearchParams();
   const { openSignIn } = useClerk();
+  const { isSignedIn, isLoaded } = useUser();
+  const router = useRouter();
+
+  // Manejar redirección automática si ya está autenticado
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      router.push("/portfolios");
+    }
+  }, [isSignedIn, isLoaded, router]);
 
   useEffect(() => {
     const redirectUrl = searchParams.get("redirect_url");
