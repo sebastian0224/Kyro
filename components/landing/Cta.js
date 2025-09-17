@@ -1,3 +1,4 @@
+import { SignUpButton } from "@clerk/nextjs";
 import { ArrowRight } from "lucide-react";
 
 export default function Cta() {
@@ -32,10 +33,12 @@ export default function Cta() {
             noise.
           </p>
 
-          <button className="group bg-blue-500 hover:bg-blue-600 text-white font-inter px-8 py-4 rounded-lg text-lg font-medium transition-all duration-300 hover:scale-105 flex items-center space-x-2 mx-auto shadow-lg shadow-blue-500/30">
-            <span>Start Tracking Free</span>
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-          </button>
+          <SignUpButton mode="modal">
+            <button className="group bg-blue-500 hover:bg-blue-600 text-white font-inter px-8 py-4 rounded-lg text-lg font-medium transition-all duration-300 hover:scale-105 flex items-center space-x-2 mx-auto shadow-lg shadow-blue-500/30">
+              <span>Start Tracking Free</span>
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+            </button>
+          </SignUpButton>
         </div>
       </div>
     </section>
